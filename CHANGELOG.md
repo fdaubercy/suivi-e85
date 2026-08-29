@@ -4,6 +4,11 @@ Toutes les modifications notables de ce projet sont documentées ici.
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
+## [5.32.5.0] — 2026-08-29
+
+### Added
+- **Web — Jauge « Atteinte de rentabilité » sous la tuile Économie nette (W89)** — nouvelle barre de progression (`buildRentaBar`) affichant le **% d'amortissement de la conversion** : `progression = économie brute cumulée / coût total de conversion`, plafonnée à 100 %. Reprend le style des jauges existantes (`gauge-track`/`gauge-tick`/`gauge-scale`, transition de remplissage), teinte bleue distincte de l'objectif CO₂ ; passe au vert « 🎉 rentabilité atteinte » quand l'économie nette repasse ≥ 0, sinon affiche « reste X € à amortir » et le pourcentage. `js/stats.js`, `css/style.css`.
+
 ## [5.32.4.0] — 2026-08-14
 
 ### Added

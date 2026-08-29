@@ -626,6 +626,7 @@ export function renderStats() {
       <span class="econ-net-val">${netSign}${s.econNette.toFixed(0)} €</span>
       <span class="econ-net-sub">brute ${s.econBrute.toFixed(0)} € − conversion ${(s.coutTotalConversion ?? s.kitPrix).toFixed(2)} € · surconso +${Math.round(s.surconsoVsRef * 100)}% vs ${s.refShort} · total</span>
     </div>
+    ${buildRentaBar(s)}
     ${buildCO2Tile(s)}
     ${buildCo2Annuel()}
     ${buildCo2Monthly()}
@@ -712,6 +713,36 @@ export function renderServerSummary() {
     const h = _serverSummaryHTML(d);
     if (h) { el.innerHTML = h; el.classList.remove('hidden'); }
   }).catch(() => { /* repli déjà affiché */ });
+}
+
+/* ─── W89 — Jauge « % d'atteinte de rentabilité » (amortissement de la conversion) ───
+   Progression = économie brute cumulée / coût total de conversion. La rentabilité
+   est atteinte quand l'économie nette repasse ≥ 0 (brute ≥ coût de conversion). */
+function buildRentaBar(s) {
+  if (!s) return '';
+  const cout = s.coutTotalConversion ?? s.kitPrix;
+  if (!(cout > 0)) return '';
+  const brute = s.econBrute;
+  const pct = Math.max(0, Math.min(100, (brute / cout) * 100));
+  const w   = pct.toFixed(0);
+  const atteint = s.econNette >= 0;
+  const cls = atteint ? 'done' : (pct >= 70 ? 'near' : 'go');
+  const right = atteint
+    ? `<span class="renta-done">🎉 rentabilité atteinte</span>`
+    : `<span class="renta-left">reste ${(cout - brute).toFixed(0)} € à amortir</span>`;
+  return `
+    <div class="renta-box ${cls}">
+      <div class="renta-head">
+        <span class="renta-label">📈 Atteinte de rentabilité</span>
+        <span class="renta-amount">${brute.toFixed(0)} / ${cout.toFixed(0)} €</span>
+      </div>
+      <div class="renta-track gauge-track">
+        <div class="renta-fill" style="width:${w}%"></div>
+        <span class="gauge-tick" style="left:50%"></span>
+      </div>
+      <div class="gauge-scale"><span>0</span><span>50 %</span><span class="gauge-target">🎯 ${cout.toFixed(0)} € · 100 %</span></div>
+      <div class="renta-foot">${right} · ${Math.round(pct)} %</div>
+    </div>`;
 }
 
 /* ─── W40 — Tuile « kg CO₂ évités » (cumul des pleins E85) ─── */

@@ -2180,6 +2180,21 @@ body.map-fs-open { overflow: hidden; }
 .co2y-done{color:#1D9E75;font-weight:600;}
 .co2y-equiv{font-size:10px;color:var(--text-muted);margin-top:4px;}
 .co2y-equiv strong{color:#1D9E75;font-variant-numeric:tabular-nums;}
+
+/* W89 — Jauge d'atteinte de rentabilité (amortissement de la conversion) */
+.renta-box{margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(59,130,246,.08);
+  border:1px solid rgba(59,130,246,.22);}
+.renta-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
+.renta-label{font-size:12px;font-weight:600;}
+.renta-amount{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;}
+.renta-track{height:8px;border-radius:5px;background:rgba(59,130,246,.18);overflow:hidden;margin:6px 0 4px;}
+.renta-fill{height:100%;border-radius:5px;transition:width .35s ease;background:#3b82f6;}
+.renta-box.near .renta-fill{background:#2563eb;}
+.renta-box.done .renta-fill{background:#1D9E75;}
+.renta-box.done{border-color:rgba(29,158,117,.45);background:rgba(29,158,117,.12);}
+.renta-foot{font-size:10px;color:var(--text-muted);}
+.renta-left{color:#3b82f6;font-weight:600;}
+.renta-done{color:#1D9E75;font-weight:600;}
 [data-theme="dark"] .co2y-left,
 [data-theme="dark"] .co2y-done,
 [data-theme="dark"] .co2y-equiv strong{color:#34d399;}
