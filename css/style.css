@@ -2195,6 +2195,10 @@ body.map-fs-open { overflow: hidden; }
 .renta-foot{font-size:10px;color:var(--text-muted);}
 .renta-left{color:#3b82f6;font-weight:600;}
 .renta-done{color:#1D9E75;font-weight:600;}
+.renta-eta{font-size:10px;color:var(--text-muted);margin-top:3px;}
+.renta-eta strong{color:#3b82f6;font-variant-numeric:tabular-nums;text-transform:capitalize;}
+.renta-box.done .renta-eta strong{color:#1D9E75;}
+.renta-eta-sub{opacity:.75;}
 [data-theme="dark"] .co2y-left,
 [data-theme="dark"] .co2y-done,
 [data-theme="dark"] .co2y-equiv strong{color:#34d399;}

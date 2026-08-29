@@ -440,6 +440,16 @@ function computeStats() {
   const coutTotalConversion = getCoutTotalConversion();
   const econNette = econBrute - coutTotalConversion; // = J31 (sur COUT_TOTAL)
 
+  // W89 (A1) — durée d'usage E85 (1er → dernier plein E85), en mois, pour projeter
+  // la date d'atteinte de rentabilité au rythme moyen d'économie brute observé.
+  const e85Dates = e85Pleins
+    .map(r => new Date(String(r.Date || r.Horodatage || '').replace(' ', 'T')))
+    .filter(d => !isNaN(d))
+    .sort((a, b) => a - b);
+  const e85SpanMonths = e85Dates.length > 1
+    ? (e85Dates[e85Dates.length - 1] - e85Dates[0]) / (1000 * 60 * 60 * 24 * 30.44)
+    : 0;
+
   // W40 — CO₂ évité par l'E85 vs le carburant de référence, à distance égale.
   //   litres réf. équivalents = litres E85 × ratioConso ;
   //   CO₂ évité = réfEquiv × CO2_réf − litresE85 × CO2_E85.
@@ -465,6 +475,7 @@ function computeStats() {
     surconsoVsRef: surconsoVsRef(rm.ratioConso),
     co2Evite,
     totLitresE85,
+    e85SpanMonths,
     nbPleins: recent.length,
     vehiculeName: veh || 'tous véhicules'
   };
@@ -717,7 +728,10 @@ export function renderServerSummary() {
 
 /* ─── W89 — Jauge « % d'atteinte de rentabilité » (amortissement de la conversion) ───
    Progression = économie brute cumulée / coût total de conversion. La rentabilité
-   est atteinte quand l'économie nette repasse ≥ 0 (brute ≥ coût de conversion). */
+   est atteinte quand l'économie nette repasse ≥ 0 (brute ≥ coût de conversion).
+   A1 — projette la date de rentabilité au rythme moyen d'économie brute observé.
+   A2 — jauge annoncée aux lecteurs d'écran (role="progressbar" + aria-valuetext).
+   A3 — tooltip explicitant le calcul (brute cumulée ÷ coût total). */
 function buildRentaBar(s) {
   if (!s) return '';
   const cout = s.coutTotalConversion ?? s.kitPrix;
@@ -730,18 +744,41 @@ function buildRentaBar(s) {
   const right = atteint
     ? `<span class="renta-done">🎉 rentabilité atteinte</span>`
     : `<span class="renta-left">reste ${(cout - brute).toFixed(0)} € à amortir</span>`;
+
+  // A1 — extrapolation : économie brute par mois × mois restants → date estimée.
+  //   rythme = brute cumulée / durée d'usage E85 ; seulement si assez de recul (≥ 2 mois).
+  let etaHtml = '';
+  if (!atteint) {
+    const rateMois = s.e85SpanMonths >= 2 ? brute / s.e85SpanMonths : 0;
+    if (rateMois > 0) {
+      const moisRestants = (cout - brute) / rateMois;
+      if (moisRestants <= 120) {
+        const d = new Date();
+        d.setDate(1);
+        d.setMonth(d.getMonth() + Math.ceil(moisRestants));
+        const quand = d.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+        etaHtml = `<div class="renta-eta">⏳ rentable vers <strong>${quand}</strong> <span class="renta-eta-sub">au rythme observé (${Math.round(s.e85SpanMonths)} mois d'E85)</span></div>`;
+      } else {
+        etaHtml = `<div class="renta-eta">⏳ rentabilité à <strong>plus de 10 ans</strong> au rythme actuel</div>`;
+      }
+    }
+  }
+
+  const tip = `Progression = économie brute cumulée (${brute.toFixed(0)} €) ÷ coût total de conversion (${cout.toFixed(0)} €). Rentabilité atteinte quand l'économie nette repasse ≥ 0.`;
+  const ariaText = `Atteinte de rentabilité ${Math.round(pct)} % — ${brute.toFixed(0)} sur ${cout.toFixed(0)} euros amortis`;
   return `
-    <div class="renta-box ${cls}">
+    <div class="renta-box ${cls}" title="${tip}">
       <div class="renta-head">
         <span class="renta-label">📈 Atteinte de rentabilité</span>
         <span class="renta-amount">${brute.toFixed(0)} / ${cout.toFixed(0)} €</span>
       </div>
-      <div class="renta-track gauge-track">
+      <div class="renta-track gauge-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${w}" aria-valuetext="${ariaText}">
         <div class="renta-fill" style="width:${w}%"></div>
         <span class="gauge-tick" style="left:50%"></span>
       </div>
       <div class="gauge-scale"><span>0</span><span>50 %</span><span class="gauge-target">🎯 ${cout.toFixed(0)} € · 100 %</span></div>
       <div class="renta-foot">${right} · ${Math.round(pct)} %</div>
+      ${etaHtml}
     </div>`;
 }
 
@@ -811,7 +848,7 @@ function buildCo2Annuel() {
         <span class="co2y-label">🌍 CO₂ évité ${year}</span>
         <span class="co2y-amount">${co2.toFixed(0)} / ${obj.toFixed(0)} kg</span>
       </div>
-      <div class="co2y-track gauge-track">
+      <div class="co2y-track gauge-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${w}" aria-valuetext="CO₂ évité ${year} : ${co2.toFixed(0)} sur ${obj.toFixed(0)} kg — ${Math.round(pct)} %">
         <div class="co2y-fill" style="width:${w}%"></div>
         <span class="gauge-tick" style="left:50%"></span>
       </div>
@@ -988,7 +1025,7 @@ function buildBudgetBar() {
         <span class="budget-label">🎯 Budget ${r.label}</span>
         <span class="budget-amount">${spent.toFixed(0)} / ${budget.toFixed(0)} €</span>
       </div>
-      <div class="budget-track gauge-track">
+      <div class="budget-track gauge-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${w}" aria-valuetext="Budget ${r.label} : ${spent.toFixed(0)} sur ${budget.toFixed(0)} € — ${Math.round(pct)} %">
         <div class="budget-fill" style="width:${w}%"></div>
         <span class="gauge-tick" style="left:50%"></span>
       </div>

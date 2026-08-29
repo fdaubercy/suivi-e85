@@ -4,6 +4,15 @@ Toutes les modifications notables de ce projet sont documentées ici.
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
+## [5.32.6.0] — 2026-08-29
+
+### Added
+- **Web — Jauge de rentabilité enrichie (W89 · A1/A2/A3)** — trois améliorations de la jauge « Atteinte de rentabilité » :
+  - **A1 — date estimée** : ligne « ⏳ rentable vers *mois aaaa* » sous la jauge, extrapolée au **rythme moyen d'économie brute** (`brute cumulée / durée d'usage E85`). Garde-fous : recul ≥ 2 mois requis (sinon masquée), « plus de 10 ans » au-delà de 120 mois, rien si l'économie nette est déjà ≥ 0. Nouveau champ `e85SpanMonths` (1er → dernier plein E85) exposé par `computeStats`.
+  - **A2 — accessibilité** : `role="progressbar"` + `aria-valuemin/max/now` + `aria-valuetext` sur les **trois** jauges (rentabilité, CO₂ annuel, budget mensuel) — annoncées correctement aux lecteurs d'écran (conforme au gate a11y W81).
+  - **A3 — tooltip** : attribut `title` sur la jauge explicitant le calcul (économie brute cumulée ÷ coût total de conversion), pour lever l'ambiguïté brute/nette.
+  - `js/stats.js` (`computeStats`, `buildRentaBar`, `buildCo2Annuel`, `buildBudgetBar`), `css/style.css` (`.renta-eta`).
+
 ## [5.32.5.0] — 2026-08-29
 
 ### Added
