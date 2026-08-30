@@ -20,7 +20,8 @@ import { onStationChange, onKmInput, submitForm, checkDuplicate, saveDraft, rest
 import { chargerStations, mergeHistoryStations } from './stations.js';
 import { initTheme, toggleTheme } from './theme.js';
 import { chargerHistorique, dupliquerDernier, voirTout, exportHistoriqueCSV, exportHistoriqueAllCSV, initCsvSepSetting, initHistoireFilters, initHistoireShare, initHistoireDelete, getMaxKmForVehicule, getAllRecords, rerenderHistorique, renderFullHistory } from './historique.js';
-import { renderStats, initSparkToggles, getNextKmPrediction, initKitSetting, initRentabiliteSettings, initBudgetSetting, initCo2ObjectifSetting, initRapport } from './stats.js';
+import { renderStats, getNextKmPrediction, initBilanSheet } from './stats.js';
+import { initSparkToggles, initKitSetting, initRentabiliteSettings, initBudgetSetting, initCo2ObjectifSetting, initRapport } from './statsSettings.js';
 import { initComparatifExport } from './comparatif.js';
 import { prewarmServerStats, getServerStats } from './statsApi.js';
 import { loadSectorPrices, renderSectorBestCard, applyHistPriceToForm } from './secteur.js';
@@ -274,6 +275,7 @@ initRentabiliteSettings(); // stats.js — X67/X68/X69 postes de cout + referenc
 initBudgetSetting();   // stats.js — W39 objectif budget carburant mensuel
 initCo2ObjectifSetting(); // stats.js — W51 objectif CO₂ annuel évité
 initRapport();         // stats.js — rapport mensuel consultable (sélecteur de mois)
+initBilanSheet();      // stats.js — W83/W84 carte « Bilan Google Sheets » (reconstruire + ouvrir)
 initVoiceKm();         // formulaire.js — W35 dictée vocale km
 /* W42 — la carte statique est rendue hors écran (offsetWidth=0) : on la re-cadre
    à l'affichage de l'onglet Carte pour un dimensionnement correct.

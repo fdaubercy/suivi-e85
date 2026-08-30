@@ -395,7 +395,12 @@ suivi-conso-carburant/
 │   ├── stations.js                  # Chargement liste stations Google Sheets
 │   ├── theme.js                     # Dark mode (toggle + persist localStorage)
 │   ├── historique.js                # 5 derniers pleins + W32 historique complet + filtres + W26 Web Share
-│   ├── stats.js                     # Stats live 4 KPIs + sparkline multi-carburant W28+W34 (W64/D2 superpose marché + mes pleins) + prédiction W33 + getNextKmPrediction W35
+│   ├── stats.js                     # W87 orchestration : computeStats + renderStats + résumé serveur + rapport mensuel (DOM) + carte bilan Sheets W83/W84
+│   ├── statsParams.js               # W87 réglages localStorage + helpers de calcul partagés (feuille du graphe de deps)
+│   ├── statsCharts.js               # W87 jauges/tuiles/graphes CO₂/budget/rentabilité (W40/W51/W55/W89) + calcul rapport mensuel
+│   ├── statsSparkline.js            # W87 sparkline prix multi-carburant W28+W34 (W64/D2) + prédiction W33 + getNextKmPrediction W35
+│   ├── statsSettings.js             # W87 câblage des champs de réglages (init* : kit, rentabilité, budget, objectif CO₂)
+│   ├── dashboardApi.js              # W83/W84 client GAS buildDashboard (rafraîchir le bilan) + URL du Google Sheet
 │   ├── statsApi.js                  # W59/S12 client agrégats serveur (cache 1 h) + résumé annuel ⚡
 │   ├── theme.js                     # U8 thème clair/sombre (prefers-color-scheme + persistance)
 │   ├── stationsmap.js               # Carte statique stations habituelles + prix moyens

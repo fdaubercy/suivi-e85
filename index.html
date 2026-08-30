@@ -291,6 +291,16 @@
 <!-- ════════════ VUE : Statistiques ════════════ -->
 <section class="view" id="view-stats" data-view="stats">
 
+<!-- ─── W83/W84 Bilan Google Sheets (reconstruire + ouvrir) — visible si connecté ─── -->
+<div class="card hidden" id="bilanSheetCard">
+  <p class="section-title">📊 Bilan Google Sheets</p>
+  <div class="bilan-actions">
+    <button class="bilan-btn" type="button" data-action="refreshBilan">🔄 Rafraîchir le bilan</button>
+    <button class="bilan-btn" type="button" data-action="openBilan">📄 Ouvrir le Google Sheet</button>
+  </div>
+  <div class="bilan-status" id="bilanStatus" role="status" aria-live="polite"></div>
+</div>
+
 <!-- ─── W59 Résumé annuel pré-agrégé côté serveur (S12) ─── -->
 <div class="card hidden" id="serverSummary"></div>
 

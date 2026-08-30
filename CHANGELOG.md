@@ -4,6 +4,21 @@ Toutes les modifications notables de ce projet sont documentées ici.
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
+## [5.33.0.0] — 2026-08-30
+
+### Added
+- **PWA — Raccourcis « Carte » et « Stats » (W88)** — `public/manifest.json` expose désormais 3 `shortcuts` (au lieu d'un seul) : « Nouveau plein », « Carte des stations » (`./#/carte`) et « Statistiques » (`./#/stats`). Appui long sur l'icône (Android/desktop) → accès direct aux 3 usages principaux. URLs en **hash** (`#/vue`), conformes au routeur de l'app.
+- **Web — Carte « Bilan Google Sheets » dans Stats (W83/W84)** — nouvelle carte en tête de la vue Statistiques (visible uniquement si connecté) : « 🔄 Rafraîchir le bilan » déclenche `action=buildDashboard` côté GAS (reconstruit l'onglet dashboard filtré par compte, comme le menu `onOpen`/le trigger quotidien de G4) avec retour d'état ; « 📄 Ouvrir le Google Sheet » ouvre le classeur dans un nouvel onglet. Nouveau module `js/dashboardApi.js` (URL builders testables `buildDashboardUrl`/`sheetEditUrl` + `refreshDashboard`). `js/dashboardApi.js`, `js/stats.js`, `js/main.js`, `index.html`, `css/style.css`.
+
+### Changed
+- **Refactor — Modularisation de `stats.js` (W87)** — le god-module `stats.js` (1417 l., > règle « fichiers < 500 l. ») est découpé par responsabilité en **6 modules tous < 500 lignes**, sans changement de comportement (288 tests inchangés en garde, API publique préservée par ré-exports) :
+  - `js/statsParams.js` (193 l.) — réglages localStorage + helpers de calcul partagés (feuille du graphe de dépendances) ;
+  - `js/statsCharts.js` (450 l.) — jauges/tuiles/graphes CO₂, budget, rentabilité + calcul du rapport mensuel ;
+  - `js/statsSparkline.js` (309 l.) — sparkline prix multi-carburant + prédiction du prochain plein ;
+  - `js/statsSettings.js` (201 l.) — câblage des champs de réglages (`init*`) ;
+  - `js/stats.js` (392 l.) — orchestration : `computeStats`, `renderStats`, résumé serveur, rapport mensuel (DOM), carte bilan.
+  - Graphe de dépendances acyclique (`statsParams` ← `statsCharts`/`statsSparkline` ← `stats` ← `statsSettings`). `js/main.js` importe les `init*` depuis `statsSettings.js`.
+
 ## [5.32.6.0] — 2026-08-29
 
 ### Added

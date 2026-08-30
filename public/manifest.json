@@ -28,6 +28,18 @@
       "short_name": "Plein",
       "description": "Saisir un plein",
       "url": "./"
+    },
+    {
+      "name": "Carte des stations",
+      "short_name": "Carte",
+      "description": "Ouvrir la carte des stations",
+      "url": "./#/carte"
+    },
+    {
+      "name": "Statistiques",
+      "short_name": "Stats",
+      "description": "Voir le bilan et les statistiques",
+      "url": "./#/stats"
     }
   ]
 }

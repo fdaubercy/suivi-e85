@@ -2199,6 +2199,19 @@ body.map-fs-open { overflow: hidden; }
 .renta-eta strong{color:#3b82f6;font-variant-numeric:tabular-nums;text-transform:capitalize;}
 .renta-box.done .renta-eta strong{color:#1D9E75;}
 .renta-eta-sub{opacity:.75;}
+
+/* W83/W84 — Carte « Bilan Google Sheets » */
+.bilan-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+.bilan-btn{flex:1 1 auto;min-width:150px;padding:9px 12px;border-radius:8px;cursor:pointer;
+  font-size:13px;font-weight:600;color:var(--text);
+  background:rgba(29,158,117,.10);border:1px solid rgba(29,158,117,.30);
+  transition:background .15s ease,border-color .15s ease;}
+.bilan-btn:hover{background:rgba(29,158,117,.18);border-color:rgba(29,158,117,.5);}
+.bilan-btn:disabled{opacity:.55;cursor:progress;}
+.bilan-status{font-size:11px;margin-top:7px;min-height:14px;color:var(--text-muted);}
+.bilan-status.ok{color:#1D9E75;}
+.bilan-status.err{color:var(--bad,#f87171);}
+.bilan-status.pending{color:#3b82f6;}
 [data-theme="dark"] .co2y-left,
 [data-theme="dark"] .co2y-done,
 [data-theme="dark"] .co2y-equiv strong{color:#34d399;}
