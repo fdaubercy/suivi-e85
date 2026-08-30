@@ -4,6 +4,11 @@ Toutes les modifications notables de ce projet sont documentées ici.
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
+## [5.33.1.0] — 2026-08-30
+
+### Added
+- **Historique — Conso L/100 km par plein (W90)** — chaque plein de la page Historique (liste des 5 derniers **et** historique complet filtré) affiche sa consommation **plein-à-plein** à côté du kilométrage : `conso = litres du plein / (km − km du plein précédent du même véhicule) × 100`. Calcul par véhicule (indépendant du type de carburant), bornes de plausibilité [1 ; 60] L/100 (écarte pleins partiels / saisies manquantes / compteur rétrograde) ; le 1er plein d'un véhicule n'affiche pas de conso (pas de prédécesseur). Fonction pure exportée `computeConsoByFill` (Map keyée par identité d'objet, recalculée à chaque changement de `_allRecords`) + 4 tests Vitest. `js/historique.js`, `css/style.css` (`.hist-conso`), `tests/historique.test.js`.
+
 ## [5.33.0.0] — 2026-08-30
 
 ### Added

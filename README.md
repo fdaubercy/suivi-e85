@@ -394,7 +394,7 @@ suivi-conso-carburant/
 │   ├── formulaire.js                # Soumission, réinitialisation, détection doublons, auto-save brouillon W15, dictée vocale km W35
 │   ├── stations.js                  # Chargement liste stations Google Sheets
 │   ├── theme.js                     # Dark mode (toggle + persist localStorage)
-│   ├── historique.js                # 5 derniers pleins + W32 historique complet + filtres + W26 Web Share
+│   ├── historique.js                # 5 derniers pleins + W32 historique complet + filtres + W26 Web Share + W90 conso L/100 par plein (computeConsoByFill)
 │   ├── stats.js                     # W87 orchestration : computeStats + renderStats + résumé serveur + rapport mensuel (DOM) + carte bilan Sheets W83/W84
 │   ├── statsParams.js               # W87 réglages localStorage + helpers de calcul partagés (feuille du graphe de deps)
 │   ├── statsCharts.js               # W87 jauges/tuiles/graphes CO₂/budget/rentabilité (W40/W51/W55/W89) + calcul rapport mensuel

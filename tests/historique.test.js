@@ -4,7 +4,7 @@
  * Logique pure : génération du CSV d'export de l'historique.
  */
 import { describe, it, expect } from 'vitest';
-import { buildHistoriqueCSV, estPleinValide } from '../js/historique.js';
+import { buildHistoriqueCSV, estPleinValide, computeConsoByFill } from '../js/historique.js';
 
 const plein = (o = {}) => ({
   Date: '2026-05-30 08:15:00',
@@ -96,5 +96,45 @@ describe('estPleinValide — anti-fantôme « plein au 01/01/1970 »', () => {
   it('rejette null / undefined', () => {
     expect(estPleinValide(null)).toBe(false);
     expect(estPleinValide(undefined)).toBe(false);
+  });
+});
+
+describe('computeConsoByFill (conso L/100 par plein)', () => {
+  const p = (veh, date, km, litres) => ({
+    'Véhicule': veh, Date: date, Horodatage: date, 'Km compteur': km, 'Nb. Litres': litres,
+  });
+
+  it('conso = litres / (Δkm) × 100 depuis le plein précédent du même véhicule', () => {
+    const a1 = p('Clio', '2026-01-01', 1000, 40);
+    const a2 = p('Clio', '2026-01-15', 1600, 42);   // 600 km, 42 L → 7.0
+    const a3 = p('Clio', '2026-02-01', 2200, 39);   // 600 km, 39 L → 6.5
+    const m = computeConsoByFill([a3, a1, a2]);      // ordre d'entrée quelconque
+    expect(m.get(a1)).toBeUndefined();               // 1er plein : pas de prédécesseur
+    expect(m.get(a2)).toBeCloseTo(7.0, 5);
+    expect(m.get(a3)).toBeCloseTo(6.5, 5);
+  });
+
+  it('écarte les valeurs aberrantes (hors [1 ; 60] L/100)', () => {
+    const a1 = p('Clio', '2026-01-01', 1000, 40);
+    const a2 = p('Clio', '2026-01-02', 1005, 40);    // 5 km, 40 L → 800 → écarté
+    const m = computeConsoByFill([a1, a2]);
+    expect(m.get(a2)).toBeUndefined();
+  });
+
+  it('ne mélange pas les véhicules (conso par véhicule)', () => {
+    const a1 = p('Clio', '2026-01-01', 1000, 40);
+    const b1 = p('208',  '2026-01-05', 5000, 50);
+    const b2 = p('208',  '2026-01-20', 5800, 44);    // 800 km, 44 L → 5.5
+    const m = computeConsoByFill([a1, b1, b2]);
+    expect(m.get(a1)).toBeUndefined();
+    expect(m.get(b1)).toBeUndefined();
+    expect(m.get(b2)).toBeCloseTo(5.5, 5);
+  });
+
+  it('ignore un km rétrograde ou nul (Δkm ≤ 0)', () => {
+    const a1 = p('Clio', '2026-01-01', 2000, 40);
+    const a2 = p('Clio', '2026-01-10', 1500, 40);    // compteur en arrière → pas de conso
+    const m = computeConsoByFill([a1, a2]);
+    expect(m.get(a2)).toBeUndefined();
   });
 });

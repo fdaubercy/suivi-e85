@@ -9,6 +9,8 @@ import { brandInfo } from './brand.js';                // W65 — icône d'ensei
 
 let _lastRecord  = null;   // memorise le plein le plus recent pour dupliquerDernier()
 let _allRecords  = [];     // memorise TOUS les enregistrements pour validation km retrograde
+let _consoByKey  = new Map();   // conso L/100 par plein (méthode plein-à-plein), cf. _consoFor
+let _consoSrc    = null;        // référence de _allRecords ayant servi au dernier calcul
 
 /* ─── Cache localStorage ─── */
 function _loadCache() {
@@ -613,6 +615,48 @@ function setSelectValue(id, value) {
   }
 }
 
+/* ─── Conso L/100 km par plein (méthode plein-à-plein) — fonction pure/testable ───
+   conso = litres du plein courant / (km courant − km du plein précédent du MÊME
+   véhicule) × 100. Le 1er plein d'un véhicule n'a pas de prédécesseur → pas de conso.
+   Bornée à [1 ; 60] pour écarter les valeurs aberrantes (pleins partiels, saisie
+   manquante, remise à zéro du compteur). Indépendante du type de carburant :
+   les litres du plein courant compensent ce qui a été consommé depuis le précédent.
+   Renvoie une Map(record → conso) keyée par IDENTITÉ d'objet (les mêmes références
+   circulent de _allRecords vers renderItem). */
+export function computeConsoByFill(records) {
+  const map = new Map();
+  const byVeh = {};
+  records.forEach(r => {
+    const v = r['Véhicule'] || r['Vehicule'] || '';
+    (byVeh[v] || (byVeh[v] = [])).push(r);
+  });
+  Object.values(byVeh).forEach(list => {
+    const sorted = list
+      .filter(r => Number(r['Km compteur'] || 0) > 0)
+      .sort((a, b) => {
+        const da = new Date(String(a.Date || a.Horodatage || '').replace(' ', 'T'));
+        const db = new Date(String(b.Date || b.Horodatage || '').replace(' ', 'T'));
+        return da - db;
+      });
+    for (let i = 1; i < sorted.length; i++) {
+      const dk  = Number(sorted[i]['Km compteur'] || 0) - Number(sorted[i - 1]['Km compteur'] || 0);
+      const lit = Number(sorted[i]['Nb. Litres'] || 0);
+      if (dk > 0 && lit > 0) {
+        const conso = (lit / dk) * 100;
+        if (conso >= 1 && conso <= 60) map.set(sorted[i], conso);
+      }
+    }
+  });
+  return map;
+}
+
+/** Conso L/100 d'un plein (undefined si non calculable). Recalcule la map une
+ *  seule fois par changement de _allRecords (comparaison de référence). */
+function _consoFor(r) {
+  if (_consoSrc !== _allRecords) { _consoByKey = computeConsoByFill(_allRecords); _consoSrc = _allRecords; }
+  return _consoByKey.get(r);
+}
+
 function renderItem(r) {
   const icon    = iconForType(r.Type);
   const date    = fmtDate(r.Date || r.Horodatage);
@@ -626,6 +670,10 @@ function renderItem(r) {
   const syncId  = String(r.sync_id || '');
   const rowKey  = _recordKey(r);
   const secteur = sectorDeltaHtml(r);   // W38 — écart vs moins cher du secteur
+  const conso   = _consoFor(r);         // conso L/100 km du plein (plein-à-plein)
+  const consoHtml = (conso != null)
+    ? ` · <span class="hist-conso" title="Consommation depuis le plein précédent (${conso.toFixed(1)} L/100 km)">${conso.toFixed(1)} L/100</span>`
+    : '';
 
   // Poubelle rendue pour TOUTES les lignes : avec sync_id → suppression serveur ;
   // sans sync_id (plein local / doublon fantôme) → purge locale du cache.
@@ -652,7 +700,7 @@ function renderItem(r) {
       </div>
       <div class="hist-row2">
         <span>${litres} L · ${prix} €/L</span>
-        <span class="hist-km">${km} km</span>
+        <span class="hist-km">${km} km${consoHtml}</span>
       </div>
       <div class="hist-row3">
         <img class="brand-ico" src="${escapeHtml(brand.icon)}" alt="${escapeHtml(brand.label || 'Station')}" width="18" height="18" loading="lazy" decoding="async">
