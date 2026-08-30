@@ -4,6 +4,11 @@ Toutes les modifications notables de ce projet sont documentées ici.
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
+## [5.33.4.0] — 2026-08-30
+
+### Fixed
+- **Version affichée figée + cache SW jamais invalidé (T3)** — `APP_VERSION` (`js/config.js`) était restée à `5.32.4.0` depuis ~7 versions : `commit.sh` ne fait qu'**avertir** en cas de divergence (il n'aligne que `package.json`, considérant `APP_VERSION` comme source de vérité manuelle). Conséquence double : (1) l'app affichait toujours `v5.32.4.0` (`main.js`), et surtout (2) `vite.config.js getVersion()` lit `APP_VERSION` pour nommer le cache du service worker (`shell-v<APP_VERSION>`) → le cache n'a jamais changé de nom → les clients servaient l'**ancien shell entier** malgré les déploiements. `APP_VERSION` remontée à `5.33.4.0` : l'affichage et le cache-busting SW repartent. `js/config.js`.
+
 ## [5.33.3.0] — 2026-08-30
 
 ### Changed
