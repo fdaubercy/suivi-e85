@@ -4,6 +4,11 @@ Toutes les modifications notables de ce projet sont documentées ici.
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
+## [5.33.2.0] — 2026-08-30
+
+### Added
+- **Historique — Conso colorée + 10 derniers pleins (W90)** — la conso L/100 de chaque plein (W90) est désormais **colorée relativement à la médiane du véhicule** : 🟢 vert (`eco`) si ≤ médiane × 0,95, 🟠 orange (`mid`) dans ±5 %, 🔴 rouge (`high`) si ≥ médiane × 1,05 ; pas de couleur si le véhicule a moins de 3 pleins mesurés (auto-calibré, robuste essence vs diesel). La liste « derniers pleins » passe de **5 à 10** entrées. `computeConsoByFill` renvoie `{ conso, level }` ; 2 tests Vitest ajoutés. `js/historique.js` (`_median`, constante `RECENT_COUNT=10`), `css/style.css` (`.hist-conso.eco/.mid/.high`), `index.html` (titre « 10 derniers pleins »), `tests/historique.test.js`.
+
 ## [5.33.1.0] — 2026-08-30
 
 ### Added

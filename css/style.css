@@ -1182,6 +1182,9 @@ body.no-share .hist-share { display: none; }
 }
 .hist-km { font-variant-numeric: tabular-nums; }
 .hist-conso { font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+.hist-conso.eco  { color: #1D9E75; }   /* économe vs la moyenne du véhicule (vert) */
+.hist-conso.mid  { color: #f59e0b; }   /* dans la normale (orange) */
+.hist-conso.high { color: #ef4444; }   /* gourmand (rouge) */
 
 .hist-row3 {
   font-size: 11px; color: var(--text-muted);

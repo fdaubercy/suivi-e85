@@ -110,8 +110,8 @@ describe('computeConsoByFill (conso L/100 par plein)', () => {
     const a3 = p('Clio', '2026-02-01', 2200, 39);   // 600 km, 39 L → 6.5
     const m = computeConsoByFill([a3, a1, a2]);      // ordre d'entrée quelconque
     expect(m.get(a1)).toBeUndefined();               // 1er plein : pas de prédécesseur
-    expect(m.get(a2)).toBeCloseTo(7.0, 5);
-    expect(m.get(a3)).toBeCloseTo(6.5, 5);
+    expect(m.get(a2).conso).toBeCloseTo(7.0, 5);
+    expect(m.get(a3).conso).toBeCloseTo(6.5, 5);
   });
 
   it('écarte les valeurs aberrantes (hors [1 ; 60] L/100)', () => {
@@ -128,7 +128,7 @@ describe('computeConsoByFill (conso L/100 par plein)', () => {
     const m = computeConsoByFill([a1, b1, b2]);
     expect(m.get(a1)).toBeUndefined();
     expect(m.get(b1)).toBeUndefined();
-    expect(m.get(b2)).toBeCloseTo(5.5, 5);
+    expect(m.get(b2).conso).toBeCloseTo(5.5, 5);
   });
 
   it('ignore un km rétrograde ou nul (Δkm ≤ 0)', () => {
@@ -136,5 +136,27 @@ describe('computeConsoByFill (conso L/100 par plein)', () => {
     const a2 = p('Clio', '2026-01-10', 1500, 40);    // compteur en arrière → pas de conso
     const m = computeConsoByFill([a1, a2]);
     expect(m.get(a2)).toBeUndefined();
+  });
+
+  it('niveau couleur relatif à la médiane du véhicule (eco / mid / high)', () => {
+    // 4 pleins mesurés (Δkm 500 chacun) → conso 8, 10, 12, 10 → médiane 10.
+    const a0 = p('Clio', '2026-01-01', 1000, 40);   // 1er : pas de conso
+    const a1 = p('Clio', '2026-01-10', 1500, 40);   // 500 km, 40 L → 8.0  (≤ 9.5 → eco)
+    const a2 = p('Clio', '2026-01-20', 2000, 50);   // 500 km, 50 L → 10.0 (±5 % → mid)
+    const a3 = p('Clio', '2026-01-30', 2500, 60);   // 500 km, 60 L → 12.0 (≥ 10.5 → high)
+    const a4 = p('Clio', '2026-02-10', 3000, 50);   // 500 km, 50 L → 10.0 (mid)
+    const m = computeConsoByFill([a0, a1, a2, a3, a4]);
+    expect(m.get(a1).level).toBe('eco');
+    expect(m.get(a2).level).toBe('mid');
+    expect(m.get(a3).level).toBe('high');
+    expect(m.get(a4).level).toBe('mid');
+  });
+
+  it('pas de couleur si le véhicule a moins de 3 pleins mesurés (level = null)', () => {
+    const a1 = p('Clio', '2026-01-01', 1000, 40);
+    const a2 = p('Clio', '2026-01-15', 1600, 42);   // 1 seul plein mesuré → level null
+    const m = computeConsoByFill([a1, a2]);
+    expect(m.get(a2).conso).toBeCloseTo(7.0, 5);
+    expect(m.get(a2).level).toBeNull();
   });
 });

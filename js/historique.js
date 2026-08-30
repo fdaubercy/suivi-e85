@@ -1,4 +1,4 @@
-/* ─── Historique des 5 derniers pleins (via GET ?action=export) ─── */
+/* ─── Historique des 10 derniers pleins (via GET ?action=export) ─── */
 import { GAS_URL, APP_TOKEN, FUEL_CONFIG, HIST_CACHE_KEY, HIST_SINCE_KEY, CSV_SEP_KEY } from './config.js';
 import { getIdToken } from './auth.js';
 import { state } from './state.js';
@@ -11,6 +11,8 @@ let _lastRecord  = null;   // memorise le plein le plus recent pour dupliquerDer
 let _allRecords  = [];     // memorise TOUS les enregistrements pour validation km retrograde
 let _consoByKey  = new Map();   // conso L/100 par plein (méthode plein-à-plein), cf. _consoFor
 let _consoSrc    = null;        // référence de _allRecords ayant servi au dernier calcul
+
+const RECENT_COUNT = 10;        // nb de pleins affichés dans la liste « derniers pleins »
 
 /* ─── Cache localStorage ─── */
 function _loadCache() {
@@ -68,7 +70,7 @@ export async function forceRefreshHistorique() {
   return chargerHistorique();
 }
 
-/** Charge et affiche les 5 derniers pleins dans #historiqueList.
+/** Charge et affiche les 10 derniers pleins dans #historiqueList.
  *  Utilise un cache localStorage + sync différentielle (?since=) pour
  *  limiter les données téléchargées sur les chargements successifs. */
 export async function chargerHistorique() {
@@ -142,11 +144,11 @@ export async function chargerHistorique() {
 
     _allRecords = allRecords;
 
-    // Tri descendant par Horodatage, puis 5 premiers
+    // Tri descendant par Horodatage, puis N premiers
     const recent = allRecords
       .slice()
       .sort((a, b) => (b.Horodatage || '').localeCompare(a.Horodatage || ''))
-      .slice(0, 5);
+      .slice(0, RECENT_COUNT);
 
     _lastRecord = recent[0];
     el.innerHTML = recent.map(renderItem).join('');
@@ -168,7 +170,7 @@ export async function chargerHistorique() {
       const recent = cached
         .slice()
         .sort((a, b) => (b.Horodatage || '').localeCompare(a.Horodatage || ''))
-        .slice(0, 5);
+        .slice(0, RECENT_COUNT);
       _lastRecord = recent[0];
       el.innerHTML = recent.map(renderItem).join('');
       renderStationsCard();
@@ -523,7 +525,7 @@ export function initHistoireShare() {
    Suppression d'un plein (UI + GoogleSheet)
    ═══════════════════════════════════════ */
 
-/** Réaffiche les 5 derniers pleins + l'historique complet ouvert. */
+/** Réaffiche les 10 derniers pleins + l'historique complet ouvert. */
 function _renderLists() {
   const el = document.getElementById('historiqueList');
   if (el) {
@@ -534,7 +536,7 @@ function _renderLists() {
       const recent = _allRecords
         .slice()
         .sort((a, b) => (b.Horodatage || '').localeCompare(a.Horodatage || ''))
-        .slice(0, 5);
+        .slice(0, RECENT_COUNT);
       _lastRecord = recent[0];
       el.innerHTML = recent.map(renderItem).join('');
     }
@@ -615,14 +617,29 @@ function setSelectValue(id, value) {
   }
 }
 
+/** Médiane d'un tableau de nombres (0 si vide). */
+function _median(vals) {
+  if (!vals.length) return 0;
+  const s = [...vals].sort((a, b) => a - b);
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+}
+
 /* ─── Conso L/100 km par plein (méthode plein-à-plein) — fonction pure/testable ───
    conso = litres du plein courant / (km courant − km du plein précédent du MÊME
    véhicule) × 100. Le 1er plein d'un véhicule n'a pas de prédécesseur → pas de conso.
    Bornée à [1 ; 60] pour écarter les valeurs aberrantes (pleins partiels, saisie
    manquante, remise à zéro du compteur). Indépendante du type de carburant :
    les litres du plein courant compensent ce qui a été consommé depuis le précédent.
-   Renvoie une Map(record → conso) keyée par IDENTITÉ d'objet (les mêmes références
-   circulent de _allRecords vers renderItem). */
+
+   Chaque plein reçoit aussi un niveau couleur RELATIF à la médiane de conso de SON
+   véhicule (auto-calibré, robuste aux véhicules essence vs diesel) :
+     • 'eco'  (vert)   conso ≤ médiane × 0,95 — plein économe ;
+     • 'mid'  (orange) conso dans ±5 % de la médiane — normal ;
+     • 'high' (rouge)  conso ≥ médiane × 1,05 — plein gourmand ;
+     • null            véhicule sans assez d'historique (< 3 pleins mesurés) → pas de couleur.
+   Renvoie une Map(record → { conso, level }) keyée par IDENTITÉ d'objet (les mêmes
+   références circulent de _allRecords vers renderItem). */
 export function computeConsoByFill(records) {
   const map = new Map();
   const byVeh = {};
@@ -638,14 +655,26 @@ export function computeConsoByFill(records) {
         const db = new Date(String(b.Date || b.Horodatage || '').replace(' ', 'T'));
         return da - db;
       });
+    const fills = [];   // { record, conso } dans les bornes de plausibilité
     for (let i = 1; i < sorted.length; i++) {
       const dk  = Number(sorted[i]['Km compteur'] || 0) - Number(sorted[i - 1]['Km compteur'] || 0);
       const lit = Number(sorted[i]['Nb. Litres'] || 0);
       if (dk > 0 && lit > 0) {
         const conso = (lit / dk) * 100;
-        if (conso >= 1 && conso <= 60) map.set(sorted[i], conso);
+        if (conso >= 1 && conso <= 60) fills.push({ record: sorted[i], conso });
       }
     }
+    // Couleur relative à la médiane du véhicule (seulement si ≥ 3 pleins mesurés).
+    const med = fills.length >= 3 ? _median(fills.map(f => f.conso)) : 0;
+    fills.forEach(({ record, conso }) => {
+      let level = null;
+      if (med > 0) {
+        if (conso <= med * 0.95)      level = 'eco';
+        else if (conso >= med * 1.05) level = 'high';
+        else                          level = 'mid';
+      }
+      map.set(record, { conso, level });
+    });
   });
   return map;
 }
@@ -670,9 +699,9 @@ function renderItem(r) {
   const syncId  = String(r.sync_id || '');
   const rowKey  = _recordKey(r);
   const secteur = sectorDeltaHtml(r);   // W38 — écart vs moins cher du secteur
-  const conso   = _consoFor(r);         // conso L/100 km du plein (plein-à-plein)
-  const consoHtml = (conso != null)
-    ? ` · <span class="hist-conso" title="Consommation depuis le plein précédent (${conso.toFixed(1)} L/100 km)">${conso.toFixed(1)} L/100</span>`
+  const c       = _consoFor(r);         // { conso, level } du plein (plein-à-plein), ou undefined
+  const consoHtml = (c && c.conso != null)
+    ? ` · <span class="hist-conso${c.level ? ' ' + c.level : ''}" title="Consommation depuis le plein précédent (${c.conso.toFixed(1)} L/100 km)${c.level === 'eco' ? ' — économe vs la moyenne du véhicule' : c.level === 'high' ? ' — gourmand vs la moyenne du véhicule' : c.level === 'mid' ? ' — dans la normale du véhicule' : ''}">${c.conso.toFixed(1)} L/100</span>`
     : '';
 
   // Poubelle rendue pour TOUTES les lignes : avec sync_id → suppression serveur ;
