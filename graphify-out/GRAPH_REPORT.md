@@ -1,13 +1,13 @@
 # Graph Report - .  (2026-08-30)
 
 ## Corpus Check
-- 7 files · ~708,424 words
+- 6 files · ~708,965 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2714 nodes · 4687 edges · 341 communities (158 shown, 183 thin omitted)
-- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 293 edges (avg confidence: 0.79)
-- Token cost: 0 input · 73,773 output
+- 2722 nodes · 4700 edges · 347 communities (166 shown, 181 thin omitted)
+- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 297 edges (avg confidence: 0.79)
+- Token cost: 0 input · 69,057 output
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_Community 0|Community 0]]
@@ -167,14 +167,14 @@
 - [[_COMMUNITY_Community 154|Community 154]]
 - [[_COMMUNITY_Community 155|Community 155]]
 - [[_COMMUNITY_Community 156|Community 156]]
+- [[_COMMUNITY_Community 157|Community 157]]
+- [[_COMMUNITY_Community 158|Community 158]]
 - [[_COMMUNITY_Community 159|Community 159]]
 - [[_COMMUNITY_Community 160|Community 160]]
 - [[_COMMUNITY_Community 161|Community 161]]
 - [[_COMMUNITY_Community 162|Community 162]]
 - [[_COMMUNITY_Community 163|Community 163]]
 - [[_COMMUNITY_Community 164|Community 164]]
-- [[_COMMUNITY_Community 165|Community 165]]
-- [[_COMMUNITY_Community 166|Community 166]]
 - [[_COMMUNITY_Community 167|Community 167]]
 - [[_COMMUNITY_Community 168|Community 168]]
 - [[_COMMUNITY_Community 169|Community 169]]
@@ -192,12 +192,12 @@
 - [[_COMMUNITY_Community 181|Community 181]]
 - [[_COMMUNITY_Community 182|Community 182]]
 - [[_COMMUNITY_Community 183|Community 183]]
+- [[_COMMUNITY_Community 184|Community 184]]
 - [[_COMMUNITY_Community 185|Community 185]]
 - [[_COMMUNITY_Community 186|Community 186]]
 - [[_COMMUNITY_Community 187|Community 187]]
 - [[_COMMUNITY_Community 188|Community 188]]
 - [[_COMMUNITY_Community 189|Community 189]]
-- [[_COMMUNITY_Community 190|Community 190]]
 - [[_COMMUNITY_Community 191|Community 191]]
 - [[_COMMUNITY_Community 192|Community 192]]
 - [[_COMMUNITY_Community 193|Community 193]]
@@ -208,12 +208,12 @@
 - [[_COMMUNITY_Community 198|Community 198]]
 - [[_COMMUNITY_Community 199|Community 199]]
 - [[_COMMUNITY_Community 200|Community 200]]
+- [[_COMMUNITY_Community 201|Community 201]]
 - [[_COMMUNITY_Community 202|Community 202]]
 - [[_COMMUNITY_Community 203|Community 203]]
 - [[_COMMUNITY_Community 204|Community 204]]
 - [[_COMMUNITY_Community 205|Community 205]]
 - [[_COMMUNITY_Community 206|Community 206]]
-- [[_COMMUNITY_Community 207|Community 207]]
 - [[_COMMUNITY_Community 208|Community 208]]
 - [[_COMMUNITY_Community 209|Community 209]]
 - [[_COMMUNITY_Community 210|Community 210]]
@@ -261,12 +261,12 @@
 - [[_COMMUNITY_Community 252|Community 252]]
 - [[_COMMUNITY_Community 253|Community 253]]
 - [[_COMMUNITY_Community 254|Community 254]]
+- [[_COMMUNITY_Community 255|Community 255]]
+- [[_COMMUNITY_Community 256|Community 256]]
 - [[_COMMUNITY_Community 257|Community 257]]
 - [[_COMMUNITY_Community 258|Community 258]]
 - [[_COMMUNITY_Community 259|Community 259]]
 - [[_COMMUNITY_Community 260|Community 260]]
-- [[_COMMUNITY_Community 261|Community 261]]
-- [[_COMMUNITY_Community 262|Community 262]]
 - [[_COMMUNITY_Community 263|Community 263]]
 - [[_COMMUNITY_Community 264|Community 264]]
 - [[_COMMUNITY_Community 265|Community 265]]
@@ -345,6 +345,12 @@
 - [[_COMMUNITY_Community 338|Community 338]]
 - [[_COMMUNITY_Community 339|Community 339]]
 - [[_COMMUNITY_Community 340|Community 340]]
+- [[_COMMUNITY_Community 341|Community 341]]
+- [[_COMMUNITY_Community 342|Community 342]]
+- [[_COMMUNITY_Community 343|Community 343]]
+- [[_COMMUNITY_Community 344|Community 344]]
+- [[_COMMUNITY_Community 345|Community 345]]
+- [[_COMMUNITY_Community 346|Community 346]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `Changed` - 111 edges
@@ -359,10 +365,10 @@
 10. `fetchPricesAtCoords()` - 24 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `X40 — Lint VBA pré-commit` --conceptually_related_to--> `package.json (v5.30.5.0, Vite/Vitest)`  [INFERRED]
-  CHANGELOG.md → package.json
 - `renderItem()` --references--> `.hist-conso.eco/.mid/.high (classes couleur)`  [INFERRED]
   js/historique.js → css/style.css
+- `X40 — Lint VBA pré-commit` --conceptually_related_to--> `package.json (v5.30.5.0, Vite/Vitest)`  [INFERRED]
+  CHANGELOG.md → package.json
 - `modCarte (cartes Excel)` --references--> `GOOGLE_MAPS_API_KEY`  [INFERRED]
   CHANGELOG.md → js/config.js
 - `CHANGELOG — Suivi Conso Carburants` --semantically_similar_to--> `ROADMAP — Suivi E85`  [INFERRED] [semantically similar]
@@ -374,34 +380,33 @@
 - None detected.
 
 ## Hyperedges (group relationships)
-- **Implémentation conso colorée relative médiane (W90)** — js_historique_computeconsobyfill, js_historique_median, concept_conso_level_thresholds, css_style_hist_conso_levels, js_historique_renderitem [EXTRACTED 1.00]
-- **Extension 5→10 derniers pleins** — js_historique_recent_count, index_10_derniers_pleins, js_historique_renderitem [INFERRED 0.85]
+- **Refonte coloration conso par carburant (W90)** — concept_per_fuel_conso_coloring, js_historique_fuelfamily, js_historique_computeconsobyfill, concept_fuel_family_grouping, rationale_flexfuel_e85_sp98 [EXTRACTED 1.00]
 
-## Communities (341 total, 183 thin omitted)
+## Communities (347 total, 181 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.06
-Nodes (79): Flux d'authentification Google — GIS One-Tap → JWT → session localStorage, LWW parameters sync — last-write-wins reconciliation across app/Excel/GAS, Offline sync queue — localStorage queue for failed GAS POSTs, submitForm, auth-changed CustomEvent — émis à chaque (dé)connexion Google, authEnabled(), _avatarHtml(), _b64urlToJson() (+71 more)
+Nodes (71): Flux d'authentification Google — GIS One-Tap → JWT → session localStorage, LWW parameters sync — last-write-wins reconciliation across app/Excel/GAS, auth-changed CustomEvent — émis à chaque (dé)connexion Google, authEnabled(), _avatarHtml(), _b64urlToJson(), _clearSession(), _dispatch() (+63 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.04
-Nodes (81): [2.11.0.0] — 2026-05-27, [2.12.0.0] — 2026-05-27, [2.12.1.0] — 2026-05-27, [2.13.0.0] — 2026-05-27, [2.14.0.0] — 2026-05-28, [2.15.0.0] — 2026-05-28, [2.16.0.0] — 2026-05-28, [2.17.0.0] — 2026-05-28 (+73 more)
-
-### Community 2 - "Community 2"
 Cohesion: 0.05
 Nodes (72): [2.10.0.1] — 2026-05-27, [2.10.0.2] — 2026-05-27, [2.10.0.3] — 2026-05-27, [2.10.0.4] — 2026-05-27, [2.10.0.5] — 2026-05-27, [2.12.2.0] — 2026-05-27, [2.12.3.0] — 2026-05-27, [2.15.0.1] — 2026-05-28 (+64 more)
 
+### Community 2 - "Community 2"
+Cohesion: 0.06
+Nodes (55): Repli OpenStreetMap (onFallback), brandIconUrl(), brandInfo(), BRANDS, detectBrand(), GENERIC_BRAND_ICON, _logUnknownBrand(), _unknownSeen (+47 more)
+
 ### Community 3 - "Community 3"
 Cohesion: 0.06
-Nodes (54): Repli OpenStreetMap (onFallback), brandIconUrl(), brandInfo(), BRANDS, detectBrand(), GENERIC_BRAND_ICON, _logUnknownBrand(), _unknownSeen (+46 more)
+Nodes (57): .bilan-* (css), #bilanSheetCard, Constantes CO2 (W40/W51), DEFAULT_SURCONSO, getAllRecords(), buildBudgetBar(), buildBudgetTrend(), buildCo2Annuel() (+49 more)
 
 ### Community 4 - "Community 4"
-Cohesion: 0.07
-Nodes (47): viewchange event, APP_TOKEN (S6 token partagé GAS/VBA), GAS_URL, GOOGLE_CLIENT_ID (auth U7 GIS), GOOGLE_CLIENT_ID (U7 auth), checkDuplicate(), initVoiceKm(), onKmInput() (+39 more)
+Cohesion: 0.09
+Nodes (52): Offline sync queue — localStorage queue for failed GAS POSTs, viewchange event, submitForm, promptLogin(), GAS_URL, GOOGLE_CLIENT_ID (auth U7 GIS), GOOGLE_CLIENT_ID (U7 auth), checkDuplicate() (+44 more)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.12
-Nodes (42): DOM helper functions, _buildTypeToggle(), _fetchPricesNearUser(), initTypeToggle(), registerPriceCallback(), setType(), _updateHeaderBadges(), FUEL_CONFIG (+34 more)
+Cohesion: 0.04
+Nodes (48): [2.12.0.0] — 2026-05-27, [2.12.1.0] — 2026-05-27, [2.13.0.0] — 2026-05-27, [2.14.0.0] — 2026-05-28, [2.15.0.0] — 2026-05-28, [2.17.0.0] — 2026-05-28, [2.4.5.1] — 2026-05-25, [2.5.0.0] — 2026-05-25 (+40 more)
 
 ### Community 6 - "Community 6"
 Cohesion: 0.05
@@ -412,19 +417,19 @@ Cohesion: 0.06
 Nodes (46): C9 reporté (compte de service Google), carburant_ref (libellé SP98/SP95/E10), Clamp surconso [0,15 ; 0,40], COUT_TOTAL (Name dérivé), ecart_ref (écart €/L vs SP98), Postes de coût one-off (boîtier/pose/carte grise/entretien/assurance/aide), Date de rentabilité optimiste (J11), proj_nb_recents (N pleins récents) (+38 more)
 
 ### Community 8 - "Community 8"
-Cohesion: 0.08
-Nodes (39): Constantes CO2 (W40/W51), DEFAULT_SURCONSO, buildBudgetBar(), buildBudgetTrend(), buildFuelSeries(), buildMonthlyReport(), buildPrixSparkline(), buildSparklineSVG() (+31 more)
+Cohesion: 0.13
+Nodes (40): DOM helper functions, Historical price resolution — nearest-prior sector/station price for past fills, _buildTypeToggle(), _updateHeaderBadges(), onStationChange(), resetForm(), applyPricesResult(), _cget() (+32 more)
 
 ### Community 9 - "Community 9"
 Cohesion: 0.08
 Nodes (35): Playwright E2E tests (Chromium, mock GAS via page.route), swVersionPlugin (Vite plugin injecting APP_VERSION into SW), Vitest unit tests + v8 coverage (235+ tests, 22 files), Path, check_calls_exist(), check_module_decl_order(), collect_known_procedures(), extract_call_name() (+27 more)
 
 ### Community 10 - "Community 10"
-Cohesion: 0.06
-Nodes (36): CLAUDE.md — Instructions Claude Code, Docs de référence (docs/ARCHITECTURE…), Gate pré-commit /graphify --update, Langue de travail français obligatoire, Self-learning tasks/lessons.md, Versioning X.Y.Z.W + Conventional Commits, PostToolUse doc agent hook, dismiss() (+28 more)
+Cohesion: 0.05
+Nodes (41): [2.11.0.0] — 2026-05-27, [2.16.0.0] — 2026-05-28, [2.4.3.0] — 2026-05-25, [2.4.4.0] — 2026-05-25, [2.4.5.0] — 2026-05-25, [2.6.0.0] — 2026-05-25, [2.7.0.3] — 2026-05-26, [3.0.0.2] — 2026-05-28 (+33 more)
 
 ### Community 11 - "Community 11"
-Cohesion: 0.12
+Cohesion: 0.13
 Nodes (34): Geolocation localStorage cache TTL 1h (W31), OSM brand enrichment — single Overpass grouped query to name stations, OSM enrichment (enrichStationsBulk) — background station name resolution, showMap(), Geo localStorage cache (GEO_CACHE_KEY, 1h TTL), geolocate(), highlightNearbyItem(), initNearbyList() (+26 more)
 
 ### Community 12 - "Community 12"
@@ -456,132 +461,132 @@ Cohesion: 0.17
 Nodes (31): build_parser(), cmd_backup(), cmd_build_form(), cmd_import(), cmd_inspect(), cmd_list(), cmd_remove(), cmd_run() (+23 more)
 
 ### Community 19 - "Community 19"
-Cohesion: 0.12
-Nodes (31): CHANGELOG — Suivi Conso Carburants, v5.13.0.0, Artifact GAS Manager / gas-config.json, Top 5 recommandés (priorités ROADMAP), Axe Dev / Outillage Claude, Axe Web app, C11 — Cohérence FuelKeyK E10/GPLc, C4 Pouvoirs navigateur Claude in Chrome (+23 more)
-
-### Community 20 - "Community 20"
 Cohesion: 0.10
 Nodes (23): CHANGELOG v5.14.0.0, buildWrapped(), computeSurconso(), _downloadBlob(), drawWrappedCard(), escapeHtml(), getAvailableYears(), getScope() (+15 more)
 
-### Community 21 - "Community 21"
-Cohesion: 0.12
-Nodes (28): Historical price resolution — nearest-prior sector/station price for past fills, plein-added event, refreshAfterPlein(), applyHistPriceToForm — fill form with historical price for past date (W60), applyHistPriceToForm(), _cacheKey(), escapeHtml(), _frDate() (+20 more)
-
-### Community 22 - "Community 22"
+### Community 20 - "Community 20"
 Cohesion: 0.06
 Nodes (31): Écran d'accueil à tuiles (W43), 📝 Auto-save brouillon (W15), 🔴 Badges de notification sur les onglets (W45), 🔄 Bannière "Mise à jour disponible" (W23), Carte interactive des résultats (W63 — Google Maps, repli OpenStreetMap), ⛽ Carte multi-carburant (W47 + W48), Duplication d'un plein (v4.14.0.0 — prix tous-carburants fiabilisés), Enregistrement (+23 more)
 
+### Community 21 - "Community 21"
+Cohesion: 0.10
+Nodes (26): PRIX_API (data.economie.gouv.fr), CARTE_FUELS, computeStationAverages(), _defaultFuelForVehicle(), _ensureUserPos(), FUEL_TOKENS, _geocodeMissing(), _geocodeTried (+18 more)
+
+### Community 22 - "Community 22"
+Cohesion: 0.13
+Nodes (18): _fetchPricesNearUser(), initTypeToggle(), registerPriceCallback(), setType(), buildComparatifCSV(), CMP_COLS, computeVehicleComparison(), exportComparatifCSV() (+10 more)
+
 ### Community 23 - "Community 23"
-Cohesion: 0.11
-Nodes (26): PRIX_API (data.economie.gouv.fr), cacheStationCoords(), CARTE_FUELS, computeStationAverages(), _defaultFuelForVehicle(), _ensureUserPos(), FUEL_TOKENS, _geocodeMissing() (+18 more)
-
-### Community 24 - "Community 24"
-Cohesion: 0.08
-Nodes (28): BuildAggregates, BuildConsoBlock, BuildPriceBlockMerged, BuildVehiculesBlock, C1 — Libellés « Super 95/98 », G1 — listes déroulantes saisie Excel, G3 — dashboard natif Sheets, W81 — a11y WCAG AA gate bloquant (+20 more)
-
-### Community 25 - "Community 25"
 Cohesion: 0.08
 Nodes (27): Actions `doGet`, Actions `doPost`, `addStation`, `addVehicule`, `bulkAdd`, `bulkUpdate` _(v2.9.0.0 — sync bidirectionnel)_, Clé Gemini (optionnel — scan ticket), Configuration requise (+19 more)
 
+### Community 24 - "Community 24"
+Cohesion: 0.19
+Nodes (24): buildBudgetBar(), buildBudgetTrend(), buildCo2Annuel(), buildCo2Monthly(), buildMonthlyReport(), computeBudgetForecast(), computeCo2Annuel(), computeCo2Monthly() (+16 more)
+
+### Community 25 - "Community 25"
+Cohesion: 0.09
+Nodes (25): BuildAggregates, BuildConsoBlock, BuildPriceBlockMerged, BuildVehiculesBlock, C1 — Libellés « Super 95/98 », G1 — listes déroulantes saisie Excel, G3 — dashboard natif Sheets, W81 — a11y WCAG AA gate bloquant (+17 more)
+
 ### Community 26 - "Community 26"
-Cohesion: 0.10
-Nodes (27): GS_Pleins (table Power Query), modSuiviVehicule.bas, _PrixHistory / PrixHistory (prix marche), v5.20.0.0, v5.21.0.0, CHANGELOG v5.30.1.0, X47 clôturé — obsolète (économies E85/CO2 négatives), X48 — garde-fou en-tetes GS_Pleins (EnsureGSHeaders) (+19 more)
+Cohesion: 0.11
+Nodes (25): CHANGELOG — Suivi Conso Carburants, modSuiviVehicule.bas, v5.21.0.0, Suivi véhicule (modSuiviVehicule.bas, multi-véhicule), Axe Web app, 🎯 Backend (GAS), 🛠️ Dev / Outillage Claude, ROADMAP — Suivi E85 (+17 more)
 
 ### Community 27 - "Community 27"
-Cohesion: 0.16
-Nodes (24): getLastRecordSummary(), initCollapsibles(), initHomeResume(), initPreferences(), initStartViewSetting(), renderHomeResume(), VIEW_META, currentView() (+16 more)
-
-### Community 28 - "Community 28"
-Cohesion: 0.09
-Nodes (25): v5.33.2.0 — Conso colorée + 10 derniers pleins (W90), Bornes de plausibilité [1;60] L/100, Calcul par véhicule (identité d'objet), Niveau couleur conso (eco/mid/high), Conso colorée relative à la médiane (W90), Seuils de couleur (médiane ×0,95 / ±5% / ×1,05), Consommation plein-à-plein L/100 km, getAllRecords (records historique) (+17 more)
-
-### Community 29 - "Community 29"
 Cohesion: 0.12
 Nodes (24): CHANGELOG v5.16.0.0, Lesson: always override background in dark theme active states, Lesson: Call to deleted module = compile error, Lesson: shapes must use xlFreeFloating, Lesson: deploy .bas as UTF-8 not CP1252, Lesson: VB_Name attribute causes macro failure, Plan sidebar icônes+titre (2026-06-13), find_wb() (+16 more)
 
-### Community 30 - "Community 30"
-Cohesion: 0.09
-Nodes (25): localStorage Keys, initVoiceKm, onKmInput, onStationChange, restoreDraft, saveDraft, initStaticHandlers, main.js (+17 more)
-
-### Community 31 - "Community 31"
-Cohesion: 0.15
-Nodes (16): buildComparatifCSV(), CMP_COLS, computeVehicleComparison(), exportComparatifCSV(), initComparatifExport(), renderComparateur(), _priceBadge(), _close() (+8 more)
-
-### Community 32 - "Community 32"
-Cohesion: 0.20
-Nodes (23): buildBudgetBar(), buildBudgetTrend(), buildCo2Annuel(), buildCo2Monthly(), buildMonthlyReport(), computeBudgetForecast(), computeCo2Annuel(), computeCo2Monthly() (+15 more)
-
-### Community 33 - "Community 33"
+### Community 28 - "Community 28"
 Cohesion: 0.08
 Nodes (24): File Structure, MAJ d'ouverture en arrière-plan (« Accueil » figé) — Implementation Plan, Notes de risque, Task 0: Pré-vol — vérifier l'état & sauvegarder, Task 1: modWorkbook — drapeau + wrappers (live), Task 2: modDashboardGraphiques — garde du tail cosmétique (live), Task 3: ThisWorkbook — planifier les wrappers (live), Task 4: Sauvegarde, recompilation propre & vérification visuelle (+16 more)
 
-### Community 34 - "Community 34"
+### Community 29 - "Community 29"
 Cohesion: 0.10
 Nodes (24): Etape prod restante = script autonome chemin temp stable, build_merge sain avec extraction fraiche des docs, Coloration Sheets via API idempotente (updateCells), commit le X = committer seulement, pas pousser, Consent screen In production (refresh_token non expirant), Deploiement GAS prod = autorisation explicite par deploiement, Diagnostic erreurs OAuth Google par message, Faux positif fuite de secret dans historique public (+16 more)
 
-### Community 35 - "Community 35"
+### Community 30 - "Community 30"
 Cohesion: 0.09
 Nodes (22): File Structure, Self-Review, Sidebar icônes + aperçu titre — Implementation Plan, Task 1 : Sauvegarde du projet VBA, Task 2 : Vérifier l'absence de références à modNavMenu, Task 3 : Réécrire `vba/modSidebar.bas`, Task 4 : Retirer le module mort `modNavMenu`, Task 5 : Redéploiement + sauvegarde (+14 more)
 
-### Community 36 - "Community 36"
+### Community 31 - "Community 31"
+Cohesion: 0.14
+Nodes (20): ApplyChartStyles (galerie ChartStyle), CreerGraphiquesWeb (rebuild dashboard), modGraphData.bas (agrégats dashboard), modGraphiques.bas (orchestration dashboard), modGraphRender.bas (rendu graphiques/KPI), modGraphCfg.bas — config partagee Public + etat mPerDeb/mPerFin, modGraphChrome.bas, modGraphData.bas — moteur d'agregats (BuildAggregates) (+12 more)
+
+### Community 32 - "Community 32"
 Cohesion: 0.13
 Nodes (22): MapEngineJs (moteur carte unifie), GOOGLE_MAPS_API_KEY, GOOGLE_MAPS_MAP_ID (Advanced markers), BrandSlugColor (slug + couleur de marque), Carte itinéraire (OSRM), Carte « Stations à proximité » (API prix gouv), Clé Google Maps locale hors dépôt (registre HKCU), EnrichEnseignesOSM (Overpass brand lookup) (+14 more)
 
-### Community 37 - "Community 37"
+### Community 33 - "Community 33"
 Cohesion: 0.09
 Nodes (21): 🎨 Charte & Workflow UI (design → code), CLAUDE.md — Suivi Conso Carburants, 🧰 Commandes, 🤝 Commandes déjà validées, 📚 Documentation obligatoire, 🎯 Déclenchement des skills (obligatoire), Délégation aux sous-agents, 🚀 Démarrage de chaque session (+13 more)
 
-### Community 38 - "Community 38"
-Cohesion: 0.12
-Nodes (22): .bilan-* (css), #bilanSheetCard, getAllRecords(), buildCo2Annuel(), buildCo2Monthly(), buildCO2Tile(), buildPrediction(), computeCo2Annuel() (+14 more)
+### Community 34 - "Community 34"
+Cohesion: 0.13
+Nodes (17): buildHistoriqueCSV(), _consoByKey, CSV_COLS, _csvSep(), _downloadCSV(), estPleinValide(), exportHistoriqueAllCSV(), exportHistoriqueCSV() (+9 more)
 
-### Community 39 - "Community 39"
+### Community 35 - "Community 35"
 Cohesion: 0.15
-Nodes (20): A1 — date estimée de rentabilité, A2 — accessibilité ARIA des jauges, A3 — tooltip title de la jauge, buildRentaBar (js/stats.js), Coût total de conversion, Économie brute cumulée, Économie nette, Gate a11y W81 (+12 more)
+Nodes (21): A1 — date estimée de rentabilité, A2 — accessibilité ARIA des jauges, A3 — tooltip title de la jauge, buildRentaBar (js/stats.js), Coût total de conversion, Économie brute cumulée, Économie nette, Gate a11y W81 (+13 more)
 
-### Community 40 - "Community 40"
+### Community 36 - "Community 36"
+Cohesion: 0.14
+Nodes (21): G1 — Listes déroulantes de saisie (validation données), ImporterNouveauxPleins (ModuleImportGS), RafraichirListesSaisie (modValidation), tbl_stationEssence (table Notes), tbl_vehicule (table Notes), Milestone v5.26.0.0 (G2 dégradé prix), _PrixHistory (relevé prix marché), Notifications push VAPID (WebPush.gs) (+13 more)
+
+### Community 37 - "Community 37"
+Cohesion: 0.11
+Nodes (20): initVoiceKm, onKmInput, onStationChange, restoreDraft, initStaticHandlers, main.js, selectStationFromMap, fetchPricesAtCoords (+12 more)
+
+### Community 38 - "Community 38"
 Cohesion: 0.10
 Nodes (19): 1. Authentification OAuth, 2. Apps Script API — Endpoints, 3. Sheets API — Endpoints, 4. Paramètres du projet — gas-config.json, 5. Erreurs fréquentes, 6. Pattern complet — modifier et redéployer, 7. Artifact GAS Manager, Créer une version (snapshot) (+11 more)
 
-### Community 41 - "Community 41"
+### Community 39 - "Community 39"
+Cohesion: 0.16
+Nodes (18): forceRefreshHistorique(), FUEL_PRICE_COL, SPARK_COLORS, initBudgetSetting(), initRapport(), initRentabiliteSettings(), initSparkToggles(), buildFuelSeries() (+10 more)
+
+### Community 40 - "Community 40"
 Cohesion: 0.13
 Nodes (20): VBA UserForm control kind (Label, TextBox, ComboBox, CommandButton, etc.), UserForm JSON spec (build-form schema), build_parser — argparse CLI parser for all subcommands, cmd_backup — export all VBA components to .bas/.cls/.frm files, cmd_build_form — create/replace a UserForm from JSON spec, cmd_import — import a .bas/.cls/.frm component file into workbook, cmd_inspect — inspect VBA components in workbook, cmd_list — list open Excel workbooks (+12 more)
 
-### Community 42 - "Community 42"
+### Community 41 - "Community 41"
 Cohesion: 0.17
 Nodes (19): EnsureGSHeaders (X48 garde-fou en-têtes), modSyncCfg.bas — config sync Public Const, modSyncDiag, modSyncGS.bas (sync Google Sheets), modSyncJson.bas (helpers JSON/format), modSyncNet, modSyncParametres (dédupliqué), ModuleImportGS (+11 more)
+
+### Community 42 - "Community 42"
+Cohesion: 0.13
+Nodes (19): GS_Pleins (table Power Query), _PrixHistory / PrixHistory (prix marche), v5.20.0.0, CHANGELOG v5.30.1.0, X47 clôturé — obsolète (économies E85/CO2 négatives), X48 — garde-fou en-tetes GS_Pleins (EnsureGSHeaders), scripts/check_vba_compile.py (X40 — lint VBA pré-commit), ComputeDashboardStats.eco / ComputeKPIs.outEco (code mort) (+11 more)
 
 ### Community 43 - "Community 43"
 Cohesion: 0.16
 Nodes (19): modCarte.bas (cartes Excel), v5.22.0.0, v5.23.0.0, Carte alentour / stations les moins chères (cartealentour.js), Google Maps JS (cartographie), Milestone v5.23.0.0 (W82 cartes Google Maps), vba/modCarte.bas (3 cartes Excel : stations, proximité, itinéraire), Carte interactive Google Maps (W63) + clé Maps JS + Map ID (+11 more)
 
 ### Community 44 - "Community 44"
-Cohesion: 0.17
-Nodes (17): FUEL_PRICE_COL, SPARK_COLORS, initBudgetSetting(), initCo2ObjectifSetting(), initRapport(), initRentabiliteSettings(), initSparkToggles(), buildFuelSeries() (+9 more)
-
-### Community 45 - "Community 45"
 Cohesion: 0.11
 Nodes (19): gas:deploy script (node gas-deploy.mjs), lint-staged (husky pre-commit: eslint + vitest related), package.json (suivi-conso-carburant v5.30.11.0), npm scripts (dev/build/test/lint/gas:deploy), Règle récurrente : APP_VERSION (js/config.js) à éditer à la main avant commit.sh, Règle : autorisation explicite (AskUserQuestion) avant déploiement GAS prod, tasks/lessons.md (journal self-learning daté), Règle : Names.Add avec =tbl_xxx (DataBodyRange) plutôt qu'OFFSET (robuste locale FR) (+11 more)
 
-### Community 46 - "Community 46"
+### Community 45 - "Community 45"
 Cohesion: 0.16
 Nodes (18): Code.gs (doGet dispatcher GAS), Dashboard.gs (construireDashboard), W80 — synchronisation hors-ligne debloquee, W82 — versionnage Service Worker / feedback badge hors-ligne, config.js (Configuration globale), APP_TOKEN, APP_VERSION, GAS_URL (+10 more)
 
-### Community 47 - "Community 47"
+### Community 46 - "Community 46"
 Cohesion: 0.11
 Nodes (17): Couverture, PHASE 1 — Moteur filtrable (fondation, sans UI segments), PHASE 2 — UI Segments + Chronologie (hybride) — REMPLACE l'ancienne « Task 3 cases à cocher », PHASE 3 — Documentation + commit, Tableau de bord — Filtres natifs (Segments + Chronologie), gConso/gPrice réactifs, légendes survol, Task 0 : Pré-vol, Task 1 : gPrice respecte la multi-sélection carburant (B6 CSV), Task 1c : Filtre PÉRIODE dans le moteur (+9 more)
 
-### Community 48 - "Community 48"
+### Community 47 - "Community 47"
 Cohesion: 0.11
 Nodes (17): 🌐 Accès, 📊 Analyse Excel — MFC, vue dérivée & saisie (v3.3.0.0), 🗺️ Carte interactive, 👤 Comptes utilisateurs — connexion Google (U7, v5.0.0.0), 🔧 Dépannage GAS, ⏰ Erreur déclencheur rapport mensuel — *« Specified permissions are not sufficient to call ScriptApp.getProjectTriggers »*, Formulaire de saisie d'un plein, 🏷️ Identification des stations — Architecture (+9 more)
 
+### Community 48 - "Community 48"
+Cohesion: 0.14
+Nodes (18): Erreur -2146827284 toutes macros (compile vs environnemental), ByRef Single->Double = erreur compile VBA, Forcer Debug-Compile via COM pour localiser la ligne fautive, Discriminer erreur compile vs runtime en COM, Double Option Explicit à l'injection COM, Encodage UTF-8 vs CP1252 des .bas (textes garblés), Erreur -2146827284 toutes macros (projet ne compile plus), Excel busy COM -2147418111 = retry+pause (+10 more)
+
 ### Community 49 - "Community 49"
-Cohesion: 0.12
-Nodes (17): js/brand.js BRANDS registry + getUnknownBrands(), Fuel brand icon catalogue (public/icons/brands), GAS backend Code.gs (doGet/doPost web app), doGet endpoints (export / stats / sectorPrices / lowprices / getParametres), doPost actions (plein / addStation / bulkAdd / bulkUpdate / scanTicket / setParametres), Parametres sheet (shared business params app<->Excel, P1), RefreshPrix.gs daily price releve (6 fuels, _PrixHistory), scanTicket endpoint (Gemini OCR, W17) (+9 more)
+Cohesion: 0.13
+Nodes (18): Google Maps JS clé restreinte référent KO en file://, Corruption en-têtes table (ligne fantôme sync_id), Rotation des secrets OAuth (gas-config.json historisé), Requête Power Query live != .m disque, _PrixHistory format long vs large (X39 prix marché), Déploiement prod = autorisation explicite par déploiement, Session coupée mi-graphify = travail non commité, Reprise: vérifier git status/diff avant de recoder (+10 more)
 
 ### Community 50 - "Community 50"
-Cohesion: 0.18
-Nodes (16): ApplyChartStyles (galerie ChartStyle), CreerGraphiquesWeb (rebuild dashboard), modGraphData.bas (agrégats dashboard), modGraphiques.bas (orchestration dashboard), modGraphRender.bas (rendu graphiques/KPI), modGraphCfg.bas — config partagee Public + etat mPerDeb/mPerFin, modGraphChrome.bas, modGraphData.bas — moteur d'agregats (BuildAggregates) (+8 more)
+Cohesion: 0.12
+Nodes (17): js/brand.js BRANDS registry + getUnknownBrands(), Fuel brand icon catalogue (public/icons/brands), GAS backend Code.gs (doGet/doPost web app), doGet endpoints (export / stats / sectorPrices / lowprices / getParametres), doPost actions (plein / addStation / bulkAdd / bulkUpdate / scanTicket / setParametres), Parametres sheet (shared business params app<->Excel, P1), RefreshPrix.gs daily price releve (6 fuels, _PrixHistory), scanTicket endpoint (Gemini OCR, W17) (+9 more)
 
 ### Community 51 - "Community 51"
 Cohesion: 0.16
@@ -596,394 +601,426 @@ Cohesion: 0.13
 Nodes (15): Vitest exit 1 = timeouts workers forks ≠ échec de code, dependencies, tesseract.js, description, engines, node, gas-deploy.mjs (script gas:deploy), Husky + lint-staged (pre-commit) (+7 more)
 
 ### Community 54 - "Community 54"
-Cohesion: 0.17
-Nodes (15): G1 — Listes déroulantes de saisie (validation données), ImporterNouveauxPleins (ModuleImportGS), RafraichirListesSaisie (modValidation), tbl_stationEssence (table Notes), tbl_vehicule (table Notes), gas-config.json, G5 — Auto-maintenance des listes de saisie, ModuleImportGS.ImporterNouveauxPleins (+7 more)
+Cohesion: 0.21
+Nodes (15): CHANGELOG v5.13.0.0, Top 5 recommandés (priorités ROADMAP), Lesson: never CStr() a real date for re-parsing, Lesson: timeline SetFilterDateRange ignores fractional dates, Axe Excel, C11 — Cohérence FuelKeyK E10/GPLc, C9 — Service account Google (Top 5 #1), Top 5 recommandés en priorité (+7 more)
 
 ### Community 55 - "Community 55"
-Cohesion: 0.15
-Nodes (14): S5 — suppression d'un plein accessible utilisateur, X61 — dates FR des abscisses du Tableau de bord, commit.sh (gate Lint), Gate a11y bloquant (W81) — 0 violation grave, X44 — Modularisation gros modules VBA (< 500 l.), X53 — Nettoyage code mort économie E85, Règle : retirer Attribute VB_Name avant set-module, Règle : Const mal placée = erreur compile-on-demand (+6 more)
+Cohesion: 0.16
+Nodes (14): v5.33.2.0 — Conso colorée + 10 derniers pleins (W90), v5.33.3.0 — conso colorée par carburant (W90), Niveau couleur conso (eco/mid/high), Conso colorée relative à la médiane (W90), Seuils de couleur (médiane ×0,95 / ±5% / ×1,05), Véhicule flex-fuel (SP98 + E85), Médiane groupée par (véhicule × famille carburant), Seuil ≥ 3 pleins du même carburant sinon neutre (+6 more)
 
 ### Community 56 - "Community 56"
 Cohesion: 0.16
-Nodes (15): Erreur -2146827284 toutes macros (compile vs environnemental), ByRef Single->Double = erreur compile VBA, Forcer Debug-Compile via COM pour localiser la ligne fautive, Discriminer erreur compile vs runtime en COM, Double Option Explicit à l'injection COM, Encodage UTF-8 vs CP1252 des .bas (textes garblés), Erreur -2146827284 toutes macros (projet ne compile plus), Excel busy COM -2147418111 = retry+pause (+7 more)
+Nodes (13): Release v5.33.0.0, GAS action=buildDashboard, APP_TOKEN (S6 token partagé GAS/VBA), buildDashboardUrl(), refreshDashboard(), sheetEditUrl(), initBilanSheet(), Shortcut « Carte des stations » (#/carte) (+5 more)
 
 ### Community 57 - "Community 57"
-Cohesion: 0.22
-Nodes (14): Feuil3 (Tableau de bord), Milestone v5.13.0.0 (X43 rebuild non bloquant), modDashboardGraphiques, modFiltres, ThisWorkbook, ApplyFiltersFromControls, Decision Chronologie hybride (puis 100% COM), ptFiltres (TCD cache) (+6 more)
-
-### Community 58 - "Community 58"
-Cohesion: 0.22
-Nodes (14): Modèle CO2 E85 vs essence (tank-to-wheel), Seuil de rentabilité E85 vs SP98 (ratio 0.66 / surconso), E85_RENTABLE_RATIO, FUEL_ANY, FUEL_CONFIG, FUEL_SELECT, PRIX_API, Surconso E85 partagée P1 (lue sur Excel J8) (+6 more)
-
-### Community 59 - "Community 59"
 Cohesion: 0.14
 Nodes (14): scripts, build, dev, gas:deploy, lint, prepare, preview, test (+6 more)
 
-### Community 60 - "Community 60"
+### Community 58 - "Community 58"
 Cohesion: 0.20
 Nodes (12): Graphique gPrice (évolution prix marché), Power Query PrixHistory.m, Onglet _PrixHistory (relevés marché), modFiltres.bas (segments/chronologie X43), modGraphCfg (consts Public), EnsureButtons, EnsureHeaderBand, EnsureParamBlock (+4 more)
 
-### Community 61 - "Community 61"
+### Community 59 - "Community 59"
 Cohesion: 0.14
 Nodes (11): Bilan dashboard, Décision ouverte (non demandée dans l'export), Points de reprise, Action interrompue reprise, Demandes de l'export & statut (avec preuve), Découpage des commits (hygiène — leçon #36), Mini-export de fin de session — Reprise 2026-06-15, Points de reprise (action en attente) (+3 more)
 
-### Community 62 - "Community 62"
+### Community 60 - "Community 60"
 Cohesion: 0.23
 Nodes (13): Violation a11y color-contrast (sérieux), Violation a11y select-name (#stationSel, critique), @axe-core/playwright (devDep), W79 — Audit a11y automatisé en CI (v5.28.0.0), Job CI a11y (axe-core, non-bloquant), W79 — audit a11y CI non-bloquant (axe-core/Playwright), tests/e2e/a11y.spec.js, .github/workflows/ci.yml (job a11y) (+5 more)
 
-### Community 63 - "Community 63"
+### Community 61 - "Community 61"
 Cohesion: 0.26
 Nodes (10): commit.sh script, CI, die(), FORCE_COLOR, hr(), info(), ok(), step() (+2 more)
 
-### Community 64 - "Community 64"
+### Community 62 - "Community 62"
 Cohesion: 0.17
 Nodes (13): hideMap, initMapInteractions, carte.js, showMap, showPinLabel, tileXY, GOOGLE_MAPS_MAP_ID, googleMapsActive (+5 more)
 
-### Community 65 - "Community 65"
+### Community 63 - "Community 63"
 Cohesion: 0.17
 Nodes (13): action=buildDashboard (dispatcher doGet), G3 — Onglet Tableau de bord natif Google Sheets, resolveOwner_ (résolution compte via idToken), _rowBelongsTo_ / filtrage email U7, statsComputeSurconso_ (surconso dynamique GAS), installerTriggerDashboard / déclencheur quotidien onOpen, U7 — Auth « Se connecter avec Google » (GIS/email), construireDashboard(email) (+5 more)
 
-### Community 66 - "Community 66"
-Cohesion: 0.18
-Nodes (12): Release v5.33.0.0, GAS action=buildDashboard, buildDashboardUrl(), refreshDashboard(), sheetEditUrl(), initBilanSheet(), Shortcut « Carte des stations » (#/carte), Shortcut « Nouveau plein » (+4 more)
+### Community 64 - "Community 64"
+Cohesion: 0.19
+Nodes (13): modDashboardKPI.bas (ConsoL100, ComputeDashboardStats), X45 — tests unitaires VBA modTests.bas, X53 — nettoyage code mort éco E85 (v5.30.6.0), CO2 Constants, DEFAULT_SURCONSO, localStorage Keys, saveDraft, CO2 E85 vs essence (W40/W51) (+5 more)
 
-### Community 67 - "Community 67"
+### Community 65 - "Community 65"
 Cohesion: 0.15
 Nodes (13): v5.25.0.0, Empreinte CO2 E85 vs essence, Milestone v3.6.0.0 (S6 token + W37 Wrapped + W38), Milestone v5.25.0.0 (X46 santé sync), modSyncGS.bas (sync Excel↔GS), _SyncLog (journal de synchro), Bilan annuel Wrapped (wrapped.js), 3. Google Apps Script — rapport mensuel (+5 more)
 
-### Community 68 - "Community 68"
-Cohesion: 0.15
-Nodes (10): Job CI audit (npm audit, non-bloquant), Job CI coverage (Vitest, non-bloquant), Job CI a11y (bloquant W81), Job CI lint (ESLint), Job CI test (Vitest), Job CI version-check (APP_VERSION vs tag Git), Workflow CI GitHub Actions, .github/workflows/ci.yml — CI Lint/Tests/Version (+2 more)
-
-### Community 69 - "Community 69"
+### Community 66 - "Community 66"
 Cohesion: 0.17
 Nodes (13): APP_VERSION 5.17.0.0, Leçon #33: ByRef exige correspondance de type exacte, Plan: Sidebar icônes + aperçu titre, btnPleinEcran déplacé sur onglet Réglages, Bannière dashboard largeur dynamique (WTOT), Fix erreur compilation -2146788248 sélecteur véhicule (ByRef Single/Double), Libellés boutons de navigation (NavbarBottom/AddButtonLabels), ZoomColsForSheet rendu Public (+5 more)
 
-### Community 70 - "Community 70"
+### Community 67 - "Community 67"
 Cohesion: 0.15
 Nodes (13): parametres.js (sync LWW paramètres), Architecture technique, Col Q (Excel) — dirty flag · cols Q/R (GS) — S3/S5, Résolution conflits par timestamp (S5), Fonctions VBA exposées, Installation, P1 — Paramètres métier partagés (onglet `Parametres`), Principe (+5 more)
 
-### Community 71 - "Community 71"
+### Community 68 - "Community 68"
+Cohesion: 0.19
+Nodes (10): calcTriplet(), emptyResp(), makeResp(), priceResp(), describe: computeTriplet — wiring DOM, describe: showCpSearch / hideCpSearch, describe: setFieldPrice, describe: showFeedback (+2 more)
+
+### Community 69 - "Community 69"
+Cohesion: 0.18
+Nodes (12): S5 — suppression d'un plein accessible utilisateur, commit.sh (gate Lint), Règle : retirer Attribute VB_Name avant set-module, Règle : Const mal placée = erreur compile-on-demand, Règle : garde anti-amputation graphify --update, tasks/lessons.md — Lessons Learned, commit.sh (gate version/lint/test), scripts/check_vba_compile.py (+4 more)
+
+### Community 70 - "Community 70"
 Cohesion: 0.17
 Nodes (11): Boutons de navigation stylisés, Calcul de statistiques de salle, Checklist qualité avant livraison, Impression et export PDF, Mise en forme conditionnelle via VBA, Navigation entre feuilles, Patterns courants en milieu hospitalier/médical, Principes fondamentaux (+3 more)
 
-### Community 72 - "Community 72"
+### Community 71 - "Community 71"
 Cohesion: 0.17
 Nodes (12): 10. Checklist UserForm — Qualité et ergonomie, 1. Création d'un UserForm par code VBA, 2. Paramétrage visuel du formulaire, 4. Événements du UserForm lui-même, 5. Validation avancée et retours visuels, 6. Mode Édition vs Mode Création (formulaire réutilisable), 7. Navigation multi-pages (MultiPage & TabStrip), 8. Formulation avancée : formulaire avec barre de progression (+4 more)
 
-### Community 73 - "Community 73"
-Cohesion: 0.21
-Nodes (12): Milestone v5.26.0.0 (G2 dégradé prix), _PrixHistory (relevé prix marché), Notifications push VAPID (WebPush.gs), jsrsasign (JWT ES256 P-256), Alertes prix par carburant (W11/W49), Prix payé vs moins cher du secteur (W38), RefreshPrix.gs (relevé quotidien S8/W38), WebPush.gs (Web Push VAPID S10) (+4 more)
-
-### Community 74 - "Community 74"
+### Community 72 - "Community 72"
 Cohesion: 0.17
 Nodes (11): 0. 🚀 GO ! — Installation en un clic, 1.1 Prérequis (une seule fois), 1.2 Modules standards à (ré)importer, 1.3 Module de feuille, 1.4 Formulaire personnalisé `frmNouveauPlein`, 1.5 Activer / rafraîchir, 1.6 Feuilles / tableaux attendus, 1. Excel — modules VBA (`Suivi Conso Carburants.xlsm`) (+3 more)
 
-### Community 75 - "Community 75"
+### Community 73 - "Community 73"
 Cohesion: 0.17
 Nodes (11): background_color, description, display, icons, lang, name, orientation, short_name (+3 more)
 
-### Community 76 - "Community 76"
+### Community 74 - "Community 74"
 Cohesion: 0.17
 Nodes (10): #6 — réalisé (Approche A : drapeau `gSilentOpen`), Demandes — statut final (avec preuve), Incident (résolu, sans perte), Mini-export de reprise — 2026-06-17 (carburants), Reste à faire (prochaine reprise), Blocages (pourquoi pas d'auto-exécution malgré le mode auto), Demandes utilisateur — statut (avec preuve), Mini-export de reprise — 2026-06-17 (suivi-essence) (+2 more)
 
-### Community 77 - "Community 77"
+### Community 75 - "Community 75"
 Cohesion: 0.20
 Nodes (11): ThisWorkbook.cls (Workbook_Open), v5.24.0.0, Rapport d'avancée par étape (AVANCEMENT-<id>.md), Drapeau gSilentOpen (Approche A), modDashboardGraphiques.bas (MAJ_Dashboard_Graphiques), Plan MAJ d'ouverture en arrière-plan (#6), RunSilentTask + OpenTask_* wrappers, AVANCEMENT #6 (v5.19.0.0) (+3 more)
 
+### Community 76 - "Community 76"
+Cohesion: 0.18
+Nodes (11): PostToolUse doc agent hook, package.json, lint-staged, js/**/*.js, npm run build, npm run dev, npm run test:e2e (playwright), npm run gas:deploy (+3 more)
+
+### Community 77 - "Community 77"
+Cohesion: 0.20
+Nodes (11): Bornes de plausibilité [1;60] L/100, Calcul par véhicule (identité d'objet), Consommation plein-à-plein L/100 km, getAllRecords (records historique), W90 — Conso L/100 km par plein, _allRecords, computeConsoByFill(), _consoFor() (+3 more)
+
 ### Community 78 - "Community 78"
+Cohesion: 0.24
+Nodes (11): Tableau de bord Excel, Filtres natifs dashboard (segments véhicule/carburant + chronologie), Milestone v5.13.0.0 (X43 rebuild non bloquant), modFiltres, Carte Rentabilité kit E85, ThisWorkbook, Decision Chronologie hybride (puis 100% COM), ptFiltres (TCD cache) (+3 more)
+
+### Community 79 - "Community 79"
+Cohesion: 0.27
+Nodes (10): Feuil3 (Tableau de bord), modDashboardGraphiques, ApplyFiltersFromControls, BuildConsoBlock (gConso multi-vehicule), BuildPriceBlockMerged (gPrice multi-carburant), Perimetre pragmatique : Vehicule -> gConso seul, Filtre Periode (B9/B10, PERIODE_DEB/FIN), RecreerDashboardComplet (+2 more)
+
+### Community 80 - "Community 80"
+Cohesion: 0.29
+Nodes (11): Modèle CO2 E85 vs essence (tank-to-wheel), E85_RENTABLE_RATIO, FUEL_ANY, FUEL_CONFIG, FUEL_SELECT, PRIX_API, DEFAULT_SURCONSO / DEFAULT_KIT_PRIX (aligne dashboard Excel J7/B5), prix.js (+3 more)
+
+### Community 81 - "Community 81"
 Cohesion: 0.20
 Nodes (11): secteur.js (prix mini secteur), stats.js (KPIs, sparkline), statsApi.js (agrégats GAS), D2 buildPrixSparkline (marché + mes pleins), BuildPriceBlockMerged SOURCE 2 (bug format long), Design X39 prix marché dans gPrice (Excel), modGraphiques.bas (gPrice), powerquery/PrixHistory.m (+3 more)
 
-### Community 79 - "Community 79"
+### Community 82 - "Community 82"
 Cohesion: 0.20
 Nodes (11): Règles VBA Suivi Conso Carburants, Skill vba-agent (COM/pywin32), modWorkbook.bas, Incident hang COM (modWorkbook vidé), Cellule paramètre désalignée (vérifier libellé réel), commit ≠ push (jamais pousser sans accord), Formula2 pour formules array structured refs (Excel 365), Lessons Learned (self-learning) (+3 more)
 
-### Community 80 - "Community 80"
+### Community 83 - "Community 83"
 Cohesion: 0.22
 Nodes (11): Configuration globale app (config.js), APP_VERSION 5.24.0.0, Barre de progression à l'ouverture (Workbook_Open v2.8), v5.24.0.0 — splash X60, frmSplash (UserForm modeless), modSplash (pilote du splash), modWorkbook (OpenTask_* différés), Fermeture coordonnée du splash (+90s SplashForceClose) (+3 more)
 
-### Community 81 - "Community 81"
+### Community 84 - "Community 84"
 Cohesion: 0.33
 Nodes (10): atTop(), buildIndicator(), initPullRefresh(), innerCanScrollUp(), onEnd(), onMove(), onStart(), reset() (+2 more)
 
-### Community 82 - "Community 82"
-Cohesion: 0.20
-Nodes (11): Google Maps JS clé restreinte référent KO en file://, Corruption en-têtes table (ligne fantôme sync_id), Rotation des secrets OAuth (gas-config.json historisé), Requête Power Query live != .m disque, _PrixHistory format long vs large (X39 prix marché), Scope OAuth accordé != API activée (Sheets API), Shell.Explorer.2 WebBrowser retiré (Win11/Office récent), Mini-export session fuel8 (+3 more)
-
-### Community 83 - "Community 83"
+### Community 85 - "Community 85"
 Cohesion: 0.18
 Nodes (10): caption, code, controls, height, name, properties, BackColor, ShowModal (+2 more)
 
-### Community 84 - "Community 84"
+### Community 86 - "Community 86"
+Cohesion: 0.27
+Nodes (10): gas-config.json, Artifact GAS Manager / gas-config.json, Axe Dev / Outillage Claude, C10 — Hook PostToolUse Chrome, C3 — Sécurité .gitignore (gas-config.json), C4 Pouvoirs navigateur Claude in Chrome, C5 Pouvoirs API Google (GAS + Sheets), C6 Renouvellement automatique token OAuth (+2 more)
+
+### Community 87 - "Community 87"
+Cohesion: 0.22
+Nodes (10): plein-added event, chargerHistorique(), _loadSince(), renderFullHistory(), _renderLists(), rerenderHistorique(), _saveCache(), _saveSince() (+2 more)
+
+### Community 88 - "Community 88"
+Cohesion: 0.20
+Nodes (10): .hist-conso (CSS), Titre « 10 derniers pleins » (index.html), escapeHtml(), fmtDate(), fmtKm(), getLastRecordSummary(), iconForType(), _loadCache() (+2 more)
+
+### Community 89 - "Community 89"
 Cohesion: 0.20
 Nodes (10): carte.js (rendu carte), formulaire.js (soumission plein), geo.js (géoloc + stations proches), historique.js, osm.js (enrichissement Overpass), D1 refreshAfterPlein (hub MAJ post-plein), D3 carte stations alentour (top 3), Design 3 fonctionnalités app (flexfuel) (+2 more)
 
-### Community 85 - "Community 85"
+### Community 90 - "Community 90"
 Cohesion: 0.22
 Nodes (10): Dependabot github-actions ecosystem (monthly), Dependabot npm ecosystem (weekly), Vitest coverage job (W72, non-blocking), ESLint job, CI workflow (lint/test/coverage/audit/version), APP_VERSION vs git tag coherence check, Vitest tests job (W14), GitHub Pages deployment target (+2 more)
 
-### Community 86 - "Community 86"
+### Community 91 - "Community 91"
 Cohesion: 0.31
 Nodes (7): CSS Fullscreen Pattern (position:fixed, no Fullscreen API), _ensureCardButtons(), _exitAll(), initMapFullscreen(), MutationObserver for button re-injection, setFsButtonState(), mapfullscreen-fsstate.test.js — setFsButtonState tests
 
-### Community 87 - "Community 87"
+### Community 92 - "Community 92"
 Cohesion: 0.36
 Nodes (8): buildRefModel(), computeConsoMoy(), matchType(), resolveConsoDiesel(), getCarburantRef(), getEcartRef(), getRefModelForStats(), recE85
 
-### Community 88 - "Community 88"
-Cohesion: 0.22
-Nodes (10): Garde anti-amputation graphify (#37/#44), graphify ignore .bas/.gs, Lessons Learned (journal d'erreurs), Déploiement prod = autorisation explicite par déploiement, Session coupée mi-graphify = travail non commité, Reprise: vérifier git status/diff avant de recoder, ROADMAP: grep Xnn avant attribution (collision), Coloration Sheets API MFC prix (G2 / g2color.py) (+2 more)
-
-### Community 89 - "Community 89"
+### Community 93 - "Community 93"
 Cohesion: 0.22
 Nodes (6): D_OLD, D_RECENT, dMinus(), iso(), SECTOR_CACHE, TODAY
 
-### Community 90 - "Community 90"
+### Community 94 - "Community 94"
 Cohesion: 0.39
 Nodes (9): CHANGELOG 5.27.0.0 — X41 + X51, DeverrouillerSuivi / VerrouillerSuivi (feuille protégée), ImporterNouveauxPleinsAuto, X41 — garde-erreur Feuil2.Worksheet_Activate, X51 — projection rentabilité J11/J12 véhicule-aware, Design X41+X51+X43c+W79 (validé brainstorming), Leçon #82 — set-doc timeout corrompt Feuil2 (X41), Feuil2 (doc-module « Suivi Carburant ») (+1 more)
 
-### Community 91 - "Community 91"
+### Community 95 - "Community 95"
 Cohesion: 0.22
 Nodes (9): 1. Logger VBA — Traçabilité complète des exécutions, 2. Assertions — Vérifier les invariants du code, 3. Tests Unitaires — Cadre de test maison, 4. Profilage — Mesurer les performances, 5. Gestion d'erreurs structurée — Au-delà du simple On Error, 6. Inspecteur de classeur — Diagnostic automatique, 7. Techniques de débogage interactif dans l'IDE, 8. Checklist débogage — Réflexes en cas de bug (+1 more)
 
-### Community 92 - "Community 92"
+### Community 96 - "Community 96"
 Cohesion: 0.25
 Nodes (9): Content-Security-Policy (index.html), Sync hors-ligne (offline.js, W80/W82), PWA / Service Worker (SW versionné W23/W82), Router SPA par hash (#/vue), U7 — Authentification Google (GIS multi-utilisateur), BAN_API, GOOGLE_MAPS_API_KEY, index.html — Shell SPA / PWA (+1 more)
 
-### Community 93 - "Community 93"
-Cohesion: 0.22
-Nodes (8): 1. Dépendances, 2. Autoriser l'accès au projet VBA (obligatoire, une seule fois), 3. Format du classeur, 4. Modèle d'attache, 5. Erreurs fréquentes, 6. Bonnes pratiques d'intégration Claude Code, Installation & dépannage — vba-agent, Instances multiples
-
-### Community 94 - "Community 94"
-Cohesion: 0.32
-Nodes (8): modDashboardKPI.bas (ConsoL100, ComputeDashboardStats), X45 — tests unitaires VBA modTests.bas, X53 — nettoyage code mort éco E85 (v5.30.6.0), CO2 Constants, DEFAULT_SURCONSO, CO2 E85 vs essence (W40/W51), computeSurconso, stats.js
-
-### Community 95 - "Community 95"
-Cohesion: 0.25
-Nodes (8): 🏗️ Architecture, Backend GAS (`Google Drive/.../Google Apps Script/`), Identité utilisateur (U7, multi-utilisateur), Modules JS (`js/`), Routing et point d'entrée, Tests, Versioning — format X.Y.Z.W (MAJOR.MINOR.PATCH.BUILD), Vue d'ensemble
-
-### Community 96 - "Community 96"
-Cohesion: 0.25
-Nodes (8): 3. Tous les contrôles — Création et événements complets, CheckBox & OptionButton, ComboBox, Frame (groupe de contrôles), Image, ListBox, SpinButton & ScrollBar, TextBox
-
 ### Community 97 - "Community 97"
-Cohesion: 0.25
-Nodes (7): Reprise de session, Étape 1 — Chargement, Étape 2 — Analyse des demandes utilisateur, Étape 3 — Actions en cours, Étape 4 — Plan de reprise, Étape 5 — Exécution, Étape 6 — Clôture
+Cohesion: 0.39
+Nodes (6): FUEL_CONFIG, FUEL_KEYS, getBannerSurconso(), seuilRentable(), surconsoVsRef(), updateRentabilite()
 
 ### Community 98 - "Community 98"
-Cohesion: 0.32
-Nodes (7): Tableau de bord Excel, Filtres natifs dashboard (segments véhicule/carburant + chronologie), Carte Rentabilité kit E85, BuildConsoBlock (gConso multi-vehicule), BuildPriceBlockMerged (gPrice multi-carburant), Perimetre pragmatique : Vehicule -> gConso seul, Filtre Periode (B9/B10, PERIODE_DEB/FIN)
+Cohesion: 0.25
+Nodes (9): computeStats(), getKitPrix(), initKitSetting(), surconsoVsRef(), getCoutPoste(), getCoutTotalConversion(), getKitPrix(), surconsoVsRef() (+1 more)
 
 ### Community 99 - "Community 99"
 Cohesion: 0.25
-Nodes (7): Environnement et prérequis, Outil, Quand combiner avec excel-vba-expert, Règles de sécurité, Références, VBA Agent — injection directe de code VBA dans Excel, Workflow standard (à suivre)
+Nodes (7): D_MID, D_OLD, D_RECENT, dMinus(), iso(), SECTOR_E85, TODAY
 
 ### Community 100 - "Community 100"
+Cohesion: 0.22
+Nodes (8): 1. Dépendances, 2. Autoriser l'accès au projet VBA (obligatoire, une seule fois), 3. Format du classeur, 4. Modèle d'attache, 5. Erreurs fréquentes, 6. Bonnes pratiques d'intégration Claude Code, Installation & dépannage — vba-agent, Instances multiples
+
+### Community 101 - "Community 101"
+Cohesion: 0.25
+Nodes (5): Job CI a11y (bloquant W81), Job CI version-check (APP_VERSION vs tag Git), .github/workflows/ci.yml — CI Lint/Tests/Version, W79 — Audit a11y axe-core WCAG A/AA, VUES
+
+### Community 102 - "Community 102"
+Cohesion: 0.25
+Nodes (8): 🏗️ Architecture, Backend GAS (`Google Drive/.../Google Apps Script/`), Identité utilisateur (U7, multi-utilisateur), Modules JS (`js/`), Routing et point d'entrée, Tests, Versioning — format X.Y.Z.W (MAJOR.MINOR.PATCH.BUILD), Vue d'ensemble
+
+### Community 103 - "Community 103"
+Cohesion: 0.25
+Nodes (8): CLAUDE.md — Instructions Claude Code, Docs de référence (docs/ARCHITECTURE…), Langue de travail français obligatoire, Self-learning tasks/lessons.md, Versioning X.Y.Z.W + Conventional Commits, Navigation par vues (W42), Suivi Conso Carburants — App, Vite (bundler/dev/build)
+
+### Community 104 - "Community 104"
+Cohesion: 0.25
+Nodes (8): 3. Tous les contrôles — Création et événements complets, CheckBox & OptionButton, ComboBox, Frame (groupe de contrôles), Image, ListBox, SpinButton & ScrollBar, TextBox
+
+### Community 105 - "Community 105"
+Cohesion: 0.25
+Nodes (7): Reprise de session, Étape 1 — Chargement, Étape 2 — Analyse des demandes utilisateur, Étape 3 — Actions en cours, Étape 4 — Plan de reprise, Étape 5 — Exécution, Étape 6 — Clôture
+
+### Community 106 - "Community 106"
+Cohesion: 0.39
+Nodes (4): dismiss(), _hide(), initPWA(), triggerInstall()
+
+### Community 107 - "Community 107"
+Cohesion: 0.25
+Nodes (8): devDependencies, eslint, @eslint/js, husky, jsdom, vite, vitest, @vitest/coverage-v8
+
+### Community 108 - "Community 108"
+Cohesion: 0.25
+Nodes (7): Environnement et prérequis, Outil, Quand combiner avec excel-vba-expert, Règles de sécurité, Références, VBA Agent — injection directe de code VBA dans Excel, Workflow standard (à suivre)
+
+### Community 109 - "Community 109"
+Cohesion: 0.29
+Nodes (7): js/cartealentour.js (carte alentour), Changelog Suivi E85, modFiltres.bas (filtres dashboard), v5.12.0.0 Filtres natifs du dashboard, v5.13.0.0, v5.20.0.0 Carte stations moins cheres (D3), X43 Rebuild dashboard non bloquant & coalesce
+
+### Community 110 - "Community 110"
 Cohesion: 0.29
 Nodes (6): version, 1. Google Apps Script (backend), 2. Connecter le formulaire, 3. Google Sheet cible, Carte Google Maps (optionnel — W63), ⚙️ Configuration
 
-### Community 101 - "Community 101"
-Cohesion: 0.33
-Nodes (7): computeStats(), surconsoVsRef(), getCoutPoste(), getCoutTotalConversion(), getKitPrix(), surconsoVsRef(), initKitSetting()
-
-### Community 102 - "Community 102"
+### Community 111 - "Community 111"
 Cohesion: 0.29
 Nodes (4): GAS_ERROR, GAS_SUCCESS, HIST_RECORD, PRIX_MOCK
 
-### Community 103 - "Community 103"
+### Community 112 - "Community 112"
 Cohesion: 0.33
 Nodes (6): [2.10.0.0] — 2026-05-27, [4.11.0.0] — 2026-06-01, [5.11.1.0] — 2026-06-09, [5.11.2.0] — 2026-06-09, [5.16.0.0] — 2026-06-13, Removed
 
-### Community 104 - "Community 104"
+### Community 113 - "Community 113"
 Cohesion: 0.33
 Nodes (6): [3.4.0.0] — 2026-05-30, [5.0.0.3] — 2026-06-04, [5.1.0.0] — 2026-06-04, [5.1.0.3] — 2026-06-04, [5.1.0.4] — 2026-06-04, Note
 
-### Community 105 - "Community 105"
+### Community 114 - "Community 114"
 Cohesion: 0.53
 Nodes (6): C1 — Cohérence libellés carburant Super 95/98, FuelKey (modGraphData — agrégats dashboard), FuelKeyK (modDashboardKPI), FuelKeyP (modPrixStation), statsFuelKey_ (GAS — normalisation carburant), C11 — Cohérence FuelKeyK pour E10/GPLc
 
-### Community 106 - "Community 106"
+### Community 115 - "Community 115"
 Cohesion: 0.40
 Nodes (6): Carburant de référence (SP98/SP95/E10/GAZOLE), CO₂ évité diesel-aware (facteur 2,68 kg/L), Comparaison E85 vs diesel (W89), vba/modRentabilite.bas, GAS PARAM_KEYS whitelist (Code.gs), js/refmodel.js — modèle de référence unifié
 
-### Community 107 - "Community 107"
+### Community 116 - "Community 116"
 Cohesion: 0.33
 Nodes (6): X40 — Lint VBA pre-commit (check_vba_compile.py), package suivi-conso-carburant (Vite/Vitest/Playwright), ROADMAP.md — Suivi E85, W79 — Audit accessibilité automatisé CI (axe-core), W81 — corriger violations a11y (select-name / color-contrast), X45 — tests VBA des fonctions pures (modTests)
 
-### Community 108 - "Community 108"
+### Community 117 - "Community 117"
 Cohesion: 0.40
 Nodes (6): Synchronisation Excel ↔ Google Sheets via Power Query + VBA, FilteredUser — filtre multi-utilisateur sur Email (U7), GS_Pleins — requête Power Query v4.3.0.7 : import CSV Google Sheets _ImportGS, _ImportGS — onglet source Google Sheets (gviz CSV endpoint), PrixHistory — requête Power Query v4.18.0.0 : import prix marché depuis _PrixHistory, _PrixHistory — onglet Google Sheets source (relevé quotidien ~7h par RefreshPrix.gs)
 
-### Community 109 - "Community 109"
+### Community 118 - "Community 118"
 Cohesion: 0.33
 Nodes (6): Content Security Policy (meta CSP, domaines Google Maps/BAN/GIS), Google Identity Services SDK (Sign in with Google), Mur de connexion U7 (#loginGate), Boutons plein écran carte (.map-fs-btn), Vue Saisie — sélecteur de rayon (2/5/10/20/50 km / Ville seule), Carte station (#stationMap) avec overlay plein écran / fermer
 
-### Community 110 - "Community 110"
+### Community 119 - "Community 119"
 Cohesion: 0.40
 Nodes (6): Maquette A - barre horizontale (recommandee), Maquette B - colonne de filtres a droite, Maquette C - segments dans la banniere + chronologie pleine largeur, Maquette D - zone filtres entre KPIs et graphiques, Maquette HTML dispositions Segments/Chronologie, Disposition A (barre filtres horizontale)
 
-### Community 111 - "Community 111"
+### Community 120 - "Community 120"
 Cohesion: 0.47
 Nodes (6): Code.gs PARAM_KEYS (whitelist GAS), clé sync conso_diesel_ref, clé sync vehicule_diesel_ref, vba/modSyncParametres.bas — transport clés, js/parametres.js — DEFS sync P1, Sync P1 last-write-wins (clés aux 3 endroits)
 
-### Community 112 - "Community 112"
+### Community 121 - "Community 121"
 Cohesion: 0.33
 Nodes (5): AVANCEMENT — #6 MAJ d'ouverture en arrière-plan (v5.19.0.0), INCIDENT (résolu, sans perte), Reprise si coupure, Tests programmatiques passés (preuves), État des tâches
 
-### Community 113 - "Community 113"
+### Community 122 - "Community 122"
 Cohesion: 0.33
 Nodes (5): AVANCEMENT — X39 · Filtres natifs (Segments + Chronologie), gConso/gPrice, survol — v5.12.0.0, Journal (1 ligne par étape testée), Notes de reprise, Prochaine étape, État global
 
-### Community 114 - "Community 114"
+### Community 123 - "Community 123"
 Cohesion: 0.33
 Nodes (6): Côté Excel — prix marché (X30/X31/X34), Modules / onglets devenus inutiles (à supprimer après validation), Procédure de renommage (à faire dans Excel, dans cet ordre), 🔄 Refresh quotidien des prix + Web Push (S8 + S10), Sélecteurs & KPI dynamiques de l'onglet « Graphiques » (X32/X33), X36/X37 — « Graphiques » devient le « Tableau de bord » + réactivité totale (v4.11.0.0)
 
-### Community 115 - "Community 115"
+### Community 124 - "Community 124"
 Cohesion: 0.33
 Nodes (5): Champs d'un contrôle, Notes, Schéma d'un UserForm — `build-form`, Structure du JSON, Types de `kind` supportés
 
-### Community 116 - "Community 116"
+### Community 125 - "Community 125"
 Cohesion: 0.50
 Nodes (5): wallpaper_opt1 — very faint outline silhouette of a motorcycle (filigrane), white background, wallpaper_opt2 — faint illustration of motorcycle + car side by side, multi-vehicle theme, wallpaper_opt3 — repeating diagonal pattern of small motorcycle + car icons, wallpaper style, wallpaper_opt4 — motorcycle in foreground + car at horizon on a road, depth perspective, wallpaper_preview.html — browser preview grid of all 4 wallpaper options
 
-### Community 117 - "Community 117"
+### Community 126 - "Community 126"
 Cohesion: 0.40
-Nodes (5): js/cartealentour.js (carte alentour), Changelog Suivi E85, modFiltres.bas (filtres dashboard), v5.12.0.0 Filtres natifs du dashboard, v5.20.0.0 Carte stations moins cheres (D3)
+Nodes (5): Job CI audit (npm audit, non-bloquant), Job CI coverage (Vitest, non-bloquant), Job CI lint (ESLint), Job CI test (Vitest), Workflow CI GitHub Actions
 
-### Community 118 - "Community 118"
+### Community 127 - "Community 127"
+Cohesion: 0.40
+Nodes (5): Gate pré-commit /graphify --update, CI GitHub Actions (W13/S9/W72), commit.sh (gate de commit), Playwright (tests E2E), Vitest (tests unitaires)
+
+### Community 128 - "Community 128"
 Cohesion: 0.40
 Nodes (5): 1. Envoi simple et robuste, 2. Email avec corps HTML professionnel, 3. Envois groupés et rapports automatiques, 4. Brouillons et suivi des envois, Envoi automatique d'emails via Outlook
 
-### Community 119 - "Community 119"
+### Community 129 - "Community 129"
 Cohesion: 0.40
 Nodes (5): 1. Import de fichiers CSV / TXT / XML, 2. Requêtes SQL vers Access ou SQL Server, 3. Appels à des APIs REST (WinHTTP), 4. Connexion SharePoint / OneDrive, Connexions à des données externes
 
-### Community 120 - "Community 120"
+### Community 130 - "Community 130"
 Cohesion: 0.40
 Nodes (5): 1. Opérations de base sur les fichiers, 2. Lister et filtrer le contenu d'un dossier, 3. Archivage automatique, 4. Surveillance de dossier — traitement automatique à l'arrivée d'un fichier, Gestion des fichiers et dossiers
 
-### Community 121 - "Community 121"
+### Community 131 - "Community 131"
 Cohesion: 0.40
 Nodes (5): Auth.gs (vérif idToken, SYNC_SECRET), auth.js (U7 comptes Google GIS), Code.gs (backend GAS doPost/doGet), Google Sheet (_ImportGS, Parametres), Identité utilisateur U7 (multi-utilisateur)
 
-### Community 122 - "Community 122"
+### Community 132 - "Community 132"
 Cohesion: 0.40
 Nodes (5): icon.svg — icône PWA : fond bleu marine #1B3A5C, emoji ⛽, texte E85 vert, manifest.json — PWA manifest (Suivi Conso. Carburants), Cache strategy — network-first same-origin, suivi-conso-carburant-shell cache, push event handler — alertes prix bas E85/Gazole/SP98 (payload-less VAPID), sw.js — Service Worker : network-first + cache fallback + Web Push alertes prix
 
-### Community 123 - "Community 123"
+### Community 133 - "Community 133"
 Cohesion: 0.67
 Nodes (4): Wallpaper opt1 — Moto silhouette minimaliste (SVG), Wallpaper opt2 — Moto + Voiture côte à côte (SVG), Wallpaper opt3 — Pattern diagonal répété moto+voiture (SVG), Wallpaper opt4 — Route en perspective avec moto + voiture (SVG)
 
-### Community 124 - "Community 124"
+### Community 134 - "Community 134"
 Cohesion: 0.83
 Nodes (4): z900_green_A_light.png — very faint/bleached version of Z900 green photo for Excel background, z900_green_B_medium.png — slightly more visible bleached version of Z900 green photo, z900_green_C_color.png — faint color-tinted (green/blue hue) version of Z900 green photo, z900_green.jpg — photo of real green Kawasaki Z900 motorcycle (source photo)
 
-### Community 125 - "Community 125"
+### Community 135 - "Community 135"
 Cohesion: 0.50
 Nodes (3): Ajouter une nouvelle enseigne, Convention (badge monogramme de repli), Icônes d'enseignes (stations-service)
 
-### Community 126 - "Community 126"
-Cohesion: 0.33
-Nodes (4): [2.4.3.0] — 2026-05-25, [2.4.4.0] — 2026-05-25, Added — 🌿 Badge rentabilité E85 (ROADMAP W5), Added — 📈 Stats live (ROADMAP W7)
-
-### Community 127 - "Community 127"
+### Community 136 - "Community 136"
 Cohesion: 0.50
 Nodes (4): [2.7.0.0] — 2026-05-25, Added — Vite bundler (W12) + Tests unitaires Vitest (W14), ⚡ W12 — Vite bundler, 🧪 W14 — Tests unitaires Vitest
 
-### Community 128 - "Community 128"
+### Community 137 - "Community 137"
 Cohesion: 0.50
 Nodes (4): [4.10.0.0] — 2026-05-31, [4.9.0.0] — 2026-05-31, Ajouté, Modifié
 
-### Community 129 - "Community 129"
+### Community 138 - "Community 138"
 Cohesion: 0.50
 Nodes (4): modGraphBlocks, modSyncEngine.bas (SyncCore import/export), modSyncExport, X44 Phase 4
 
-### Community 131 - "Community 131"
+### Community 140 - "Community 140"
 Cohesion: 0.67
 Nodes (4): Job CI version-check — compare config.js au dernier tag, commit.sh — n'aligne que package.json, avertit de la divergence APP_VERSION sans bloquer (warning), APP_VERSION — source de vérité de la version affichée (js/config.js), Leçon 2026-06-29 : APP_VERSION (js/config.js) à éditer à la main à chaque commit
 
-### Community 132 - "Community 132"
+### Community 141 - "Community 141"
 Cohesion: 0.50
 Nodes (4): Cas d'usage validés sur ce projet, Plugins installés (ou à installer), 🤖 Ruflo — Orchestration multi-agents (MCP), Règles d'utilisation
 
-### Community 133 - "Community 133"
+### Community 142 - "Community 142"
 Cohesion: 0.50
 Nodes (3): hooks, PostToolUse, Stop
 
-### Community 134 - "Community 134"
+### Community 143 - "Community 143"
 Cohesion: 0.50
 Nodes (4): Créer un graphique professionnel, Graphiques et Dashboards, Palette de couleurs professionnelle (santé/hôpital), Structure type d'un Dashboard
 
-### Community 135 - "Community 135"
+### Community 144 - "Community 144"
 Cohesion: 0.50
 Nodes (4): Manipulation de cellules et plages, Manipulation des feuilles, Tableaux (Arrays), VBA — Fondamentaux
 
-### Community 136 - "Community 136"
+### Community 145 - "Community 145"
 Cohesion: 0.50
 Nodes (4): ModuleImportGS, ApplyDefaultPeriodOnce, Bug date 06/09 vs 09/06 (corrige), SetFilterDateRange (TimelineState)
 
-### Community 137 - "Community 137"
+### Community 146 - "Community 146"
 Cohesion: 0.50
 Nodes (4): config.js (source de vérité), Architecture Suivi Conso Carburants, PWA sans framework (Vite + GitHub Pages), Versioning X.Y.Z.W
 
-### Community 138 - "Community 138"
+### Community 147 - "Community 147"
 Cohesion: 0.67
 Nodes (4): Skill brand-perso, Charte & Workflow UI (design→code), ui-coder (intégration maquette), ui-designer (maquette statique)
 
-### Community 139 - "Community 139"
+### Community 148 - "Community 148"
 Cohesion: 0.50
 Nodes (4): 🎯 Améliorations significatives, 📊 Observabilité, 🔄 Synchronisation Excel ↔ Google Sheets, 🛡️ Sécurité
 
-### Community 140 - "Community 140"
+### Community 149 - "Community 149"
 Cohesion: 0.50
 Nodes (4): 📊 Excel, 🎯 Onglet "Tableau de bord", ⚡ Performance, 🛠️ Robustesse
 
-### Community 141 - "Community 141"
-Cohesion: 0.83
-Nodes (3): emptyResp(), makeResp(), priceResp()
-
-### Community 142 - "Community 142"
+### Community 150 - "Community 150"
 Cohesion: 0.50
 Nodes (3): Installation, Test rapide (classeur .xlsm ouvert), vba-agent
 
-### Community 143 - "Community 143"
+### Community 151 - "Community 151"
 Cohesion: 0.67
 Nodes (3): [4.3.0.4] — 2026-05-31, ⚠️ Action requise dans le classeur (snippets fournis, binaire non modifié), Audit — alignement du classeur Excel local ↔ GAS / Google Sheet
 
-### Community 144 - "Community 144"
+### Community 152 - "Community 152"
 Cohesion: 0.67
 Nodes (3): [4.8.0.0] — 2026-05-31, ⚠️ Installation, ⚠️ Installation dans le classeur
 
-### Community 145 - "Community 145"
+### Community 153 - "Community 153"
 Cohesion: 0.67
 Nodes (3): S3 — soft-delete honoré partout (pleins supprimés), powerquery/GS_Pleins.m, vba/ModuleImportGS.bas (ImporterNouveauxPleins)
 
-### Community 146 - "Community 146"
-Cohesion: 0.67
-Nodes (3): CHANGELOG v5.13.0.0, Lesson: never CStr() a real date for re-parsing, Lesson: timeline SetFilterDateRange ignores fractional dates
-
-### Community 148 - "Community 148"
+### Community 155 - "Community 155"
 Cohesion: 0.67
 Nodes (3): VBA Agent COM injection via pywin32 (set-module, build-form, run), skill: vba-agent, vba-agent exemple-form.json
 
-### Community 149 - "Community 149"
+### Community 156 - "Community 156"
+Cohesion: 1.00
+Nodes (3): Seuil de rentabilité E85 vs SP98 (ratio 0.66 / surconso), Surconso E85 partagée P1 (lue sur Excel J8), Rentabilité kit E85 (éco cumulée / coût kit, surconso J8)
+
+### Community 157 - "Community 157"
 Cohesion: 0.67
 Nodes (3): Z900 Kawasaki — filigrane moyen N&B (opacité ~16%, flou Gaussien r=5), Z900 Kawasaki — filigrane couleur léger (opacité ~13%, flou r=3), z900_preview.html — galerie HTML des 6 variantes de filigrane Kawasaki Z900
 
-### Community 151 - "Community 151"
+### Community 158 - "Community 158"
 Cohesion: 0.67
-Nodes (3): 🎯 Backend (GAS), ☁️ Google Apps Script / Google Sheets, 📋 Onglets Google Sheets
+Nodes (3): jsrsasign (JWT ES256 P-256), Alertes prix par carburant (W11/W49), WebPush.gs (Web Push VAPID S10)
 
-### Community 152 - "Community 152"
+### Community 160 - "Community 160"
 Cohesion: 0.67
-Nodes (3): 🛠️ Dev / Outillage Claude, ✅ Réalisé, 🔧 À faire
+Nodes (3): API Prix Carburants (data.economie.gouv.fr), Content Security Policy (_headers + meta), OpenStreetMap Overpass (enseignes)
 
-### Community 153 - "Community 153"
+### Community 161 - "Community 161"
 Cohesion: 0.67
 Nodes (3): W85 — Icônes PWA raster PNG (192/512 + maskable), W86 — screenshots dans le manifest, W88 — Raccourcis d'app supplémentaires (shortcuts)
 
-### Community 154 - "Community 154"
+### Community 162 - "Community 162"
 Cohesion: 0.67
 Nodes (3): git assume-unchanged sur .xlsm, commit != push (commit.sh couple push), vitest exit 1 = timeouts workers forks (environnemental)
 
@@ -992,24 +1029,24 @@ Nodes (3): git assume-unchanged sur .xlsm, commit != push (commit.sh couple push
   tasks/lessons.md · relation: conceptually_related_to
 
 ## Knowledge Gaps
-- **899 isolated node(s):** `_comment`, `_doc`, `_scopes`, `scriptId`, `sheetId` (+894 more)
+- **901 isolated node(s):** `_comment`, `_doc`, `_scopes`, `scriptId`, `sheetId` (+896 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **183 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **181 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **What is the exact relationship between `Leçon — surconso J7/J8 (faux positif décalage cellule)` and `scripts/check_vba_compile.py (X40 — lint VBA pré-commit)`?**
   _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
-- **Why does `ROADMAP — Suivi E85` connect `Community 19` to `Community 67`, `Community 73`, `Community 139`, `Community 140`, `Community 43`, `Community 77`, `Community 117`, `Community 54`, `Community 55`, `Community 152`, `Community 151`, `Community 26`, `Community 62`?**
-  _High betweenness centrality (0.078) - this node is a cross-community bridge._
-- **Why does `RefreshPrix.gs (relevé quotidien S8/W38)` connect `Community 73` to `Community 60`, `Community 78`?**
+- **Why does `ROADMAP — Suivi E85` connect `Community 26` to `Community 65`, `Community 36`, `Community 42`, `Community 43`, `Community 75`, `Community 109`, `Community 148`, `Community 149`, `Community 54`, `Community 86`, `Community 60`, `Community 31`?**
+  _High betweenness centrality (0.077) - this node is a cross-community bridge._
+- **Why does `RefreshPrix.gs (relevé quotidien S8/W38)` connect `Community 36` to `Community 81`, `Community 58`, `Community 158`?**
   _High betweenness centrality (0.043) - this node is a cross-community bridge._
-- **Why does `Synchronisation bidirectionnelle Excel ↔ GS` connect `Community 70` to `Community 48`, `Community 121`, `Community 13`, `Community 95`?**
+- **Why does `Synchronisation bidirectionnelle Excel ↔ GS` connect `Community 67` to `Community 131`, `Community 13`, `Community 102`, `Community 47`?**
   _High betweenness centrality (0.042) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `ROADMAP — Suivi E85` (e.g. with `CHANGELOG — Suivi Conso Carburants` and `Changelog Suivi E85`) actually correct?**
   _`ROADMAP — Suivi E85` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `_comment`, `_doc`, `_scopes` to the rest of the system?**
-  _999 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1001 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.05543345543345543 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05802469135802469 - nodes in this community are weakly interconnected._

@@ -625,6 +625,20 @@ function _median(vals) {
   return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
 }
 
+/** Famille de carburant normalisée (pour comparer chaque plein aux pleins du MÊME
+ *  carburant). L'E85 consomme ~25-30 % de plus que l'essence : sans ce regroupement,
+ *  tous les pleins E85 seraient « rouges » et les SP98 « verts » à tort. */
+function _fuelFamily(type) {
+  const t = String(type || '').toLowerCase();
+  if (t.includes('e85') || t.includes('ethanol'))   return 'E85';
+  if (t.includes('e10'))                            return 'E10';
+  if (t.includes('98'))                             return 'SP98';
+  if (t.includes('95'))                             return 'SP95';
+  if (t.includes('gazole') || t.includes('diesel')) return 'GAZOLE';
+  if (t.includes('gpl'))                            return 'GPL';
+  return t || 'AUTRE';
+}
+
 /* ─── Conso L/100 km par plein (méthode plein-à-plein) — fonction pure/testable ───
    conso = litres du plein courant / (km courant − km du plein précédent du MÊME
    véhicule) × 100. Le 1er plein d'un véhicule n'a pas de prédécesseur → pas de conso.
@@ -632,12 +646,14 @@ function _median(vals) {
    manquante, remise à zéro du compteur). Indépendante du type de carburant :
    les litres du plein courant compensent ce qui a été consommé depuis le précédent.
 
-   Chaque plein reçoit aussi un niveau couleur RELATIF à la médiane de conso de SON
-   véhicule (auto-calibré, robuste aux véhicules essence vs diesel) :
+   Chaque plein reçoit aussi un niveau couleur RELATIF à la médiane de conso des
+   pleins du MÊME carburant sur SON véhicule (auto-calibré : gère un véhicule qui
+   alterne SP98 et E85 — l'E85 consomme plus, il est jugé vs les autres pleins E85,
+   pas vs le SP98) :
      • 'eco'  (vert)   conso ≤ médiane × 0,95 — plein économe ;
      • 'mid'  (orange) conso dans ±5 % de la médiane — normal ;
      • 'high' (rouge)  conso ≥ médiane × 1,05 — plein gourmand ;
-     • null            véhicule sans assez d'historique (< 3 pleins mesurés) → pas de couleur.
+     • null            (véhicule × carburant) sans assez d'historique (< 3 pleins mesurés).
    Renvoie une Map(record → { conso, level }) keyée par IDENTITÉ d'objet (les mêmes
    références circulent de _allRecords vers renderItem). */
 export function computeConsoByFill(records) {
@@ -655,25 +671,32 @@ export function computeConsoByFill(records) {
         const db = new Date(String(b.Date || b.Horodatage || '').replace(' ', 'T'));
         return da - db;
       });
-    const fills = [];   // { record, conso } dans les bornes de plausibilité
+    // Conso par plein (Δkm chronologique, indépendant du carburant), avec sa famille.
+    const fills = [];   // { record, conso, fam }
     for (let i = 1; i < sorted.length; i++) {
       const dk  = Number(sorted[i]['Km compteur'] || 0) - Number(sorted[i - 1]['Km compteur'] || 0);
       const lit = Number(sorted[i]['Nb. Litres'] || 0);
       if (dk > 0 && lit > 0) {
         const conso = (lit / dk) * 100;
-        if (conso >= 1 && conso <= 60) fills.push({ record: sorted[i], conso });
+        if (conso >= 1 && conso <= 60) {
+          fills.push({ record: sorted[i], conso, fam: _fuelFamily(sorted[i].Type) });
+        }
       }
     }
-    // Couleur relative à la médiane du véhicule (seulement si ≥ 3 pleins mesurés).
-    const med = fills.length >= 3 ? _median(fills.map(f => f.conso)) : 0;
-    fills.forEach(({ record, conso }) => {
-      let level = null;
-      if (med > 0) {
-        if (conso <= med * 0.95)      level = 'eco';
-        else if (conso >= med * 1.05) level = 'high';
-        else                          level = 'mid';
-      }
-      map.set(record, { conso, level });
+    // Couleur : médiane calculée PAR CARBURANT (≥ 3 pleins de ce carburant requis).
+    const byFam = {};
+    fills.forEach(f => (byFam[f.fam] || (byFam[f.fam] = [])).push(f));
+    Object.values(byFam).forEach(group => {
+      const med = group.length >= 3 ? _median(group.map(f => f.conso)) : 0;
+      group.forEach(({ record, conso }) => {
+        let level = null;
+        if (med > 0) {
+          if (conso <= med * 0.95)      level = 'eco';
+          else if (conso >= med * 1.05) level = 'high';
+          else                          level = 'mid';
+        }
+        map.set(record, { conso, level });
+      });
     });
   });
   return map;
@@ -701,7 +724,7 @@ function renderItem(r) {
   const secteur = sectorDeltaHtml(r);   // W38 — écart vs moins cher du secteur
   const c       = _consoFor(r);         // { conso, level } du plein (plein-à-plein), ou undefined
   const consoHtml = (c && c.conso != null)
-    ? ` · <span class="hist-conso${c.level ? ' ' + c.level : ''}" title="Consommation depuis le plein précédent (${c.conso.toFixed(1)} L/100 km)${c.level === 'eco' ? ' — économe vs la moyenne du véhicule' : c.level === 'high' ? ' — gourmand vs la moyenne du véhicule' : c.level === 'mid' ? ' — dans la normale du véhicule' : ''}">${c.conso.toFixed(1)} L/100</span>`
+    ? ` · <span class="hist-conso${c.level ? ' ' + c.level : ''}" title="Consommation depuis le plein précédent (${c.conso.toFixed(1)} L/100 km)${c.level === 'eco' ? ' — économe vs vos pleins de ce carburant' : c.level === 'high' ? ' — gourmand vs vos pleins de ce carburant' : c.level === 'mid' ? ' — dans la normale de ce carburant' : ''}">${c.conso.toFixed(1)} L/100</span>`
     : '';
 
   // Poubelle rendue pour TOUTES les lignes : avec sync_id → suppression serveur ;

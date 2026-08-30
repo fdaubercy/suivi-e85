@@ -100,8 +100,8 @@ describe('estPleinValide — anti-fantôme « plein au 01/01/1970 »', () => {
 });
 
 describe('computeConsoByFill (conso L/100 par plein)', () => {
-  const p = (veh, date, km, litres) => ({
-    'Véhicule': veh, Date: date, Horodatage: date, 'Km compteur': km, 'Nb. Litres': litres,
+  const p = (veh, date, km, litres, type = '') => ({
+    'Véhicule': veh, Type: type, Date: date, Horodatage: date, 'Km compteur': km, 'Nb. Litres': litres,
   });
 
   it('conso = litres / (Δkm) × 100 depuis le plein précédent du même véhicule', () => {
@@ -158,5 +158,26 @@ describe('computeConsoByFill (conso L/100 par plein)', () => {
     const m = computeConsoByFill([a1, a2]);
     expect(m.get(a2).conso).toBeCloseTo(7.0, 5);
     expect(m.get(a2).level).toBeNull();
+  });
+
+  it('couleur par carburant : E85 (conso haute) et SP98 ne se contaminent pas', () => {
+    // Même véhicule, Δkm 500. SP98 ~7 L/100, E85 ~9 L/100 (≈ +29 %, réaliste).
+    // Sans regroupement par carburant, la médiane globale (~8) mettrait tous les
+    // E85 en rouge et tous les SP98 en vert. Avec regroupement : chacun 'mid'
+    // dans sa propre famille.
+    const s1 = p('Clio', '2026-01-01', 1000, 40, 'SP98');   // 1er SP98 : pas de conso
+    const s2 = p('Clio', '2026-01-10', 1500, 35, 'SP98');   // 500 km, 35 L → 7.0
+    const s3 = p('Clio', '2026-01-20', 2000, 35, 'SP98');   // → 7.0
+    const s4 = p('Clio', '2026-01-30', 2500, 35, 'SP98');   // → 7.0  (médiane SP98 = 7)
+    const e1 = p('Clio', '2026-02-10', 3000, 45, 'SuperEthanol E85');   // 500 km, 45 L → 9.0
+    const e2 = p('Clio', '2026-02-20', 3500, 45, 'SuperEthanol E85');   // → 9.0
+    const e3 = p('Clio', '2026-03-01', 4000, 45, 'SuperEthanol E85');   // → 9.0  (médiane E85 = 9)
+    const m = computeConsoByFill([s1, s2, s3, s4, e1, e2, e3]);
+    // E85 à 9.0 = médiane E85 → 'mid' (PAS 'high' malgré une conso > médiane globale)
+    expect(m.get(e2).conso).toBeCloseTo(9.0, 5);
+    expect(m.get(e2).level).toBe('mid');
+    // SP98 à 7.0 = médiane SP98 → 'mid' (PAS 'eco' malgré une conso < médiane globale)
+    expect(m.get(s3).conso).toBeCloseTo(7.0, 5);
+    expect(m.get(s3).level).toBe('mid');
   });
 });

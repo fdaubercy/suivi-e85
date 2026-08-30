@@ -4,6 +4,11 @@ Toutes les modifications notables de ce projet sont documentées ici.
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
+## [5.33.3.0] — 2026-08-30
+
+### Changed
+- **Historique — Coloration conso par carburant (W90)** — la couleur de la conso (vert/orange/rouge) est désormais calculée par rapport à la médiane des pleins du **même carburant** sur le véhicule, et non plus à la médiane globale du véhicule. Corrige le cas d'un véhicule **flex-fuel** (SP98 + E85) : l'E85 consommant ~25-30 % de plus, tous ses pleins ressortaient en rouge et les SP98 en vert à tort. Chaque plein E85 est maintenant jugé vs les autres E85, chaque SP98 vs les autres SP98 (seuil ≥ 3 pleins **de ce carburant** requis, sinon neutre). Helper `_fuelFamily` (E85/SP98/SP95/E10/GAZOLE/GPL) ; médiane regroupée par `(véhicule × carburant)`. `js/historique.js`, `tests/historique.test.js` (test de non-contamination E85/SP98).
+
 ## [5.33.2.0] — 2026-08-30
 
 ### Added
