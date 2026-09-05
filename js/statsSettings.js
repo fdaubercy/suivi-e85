@@ -3,15 +3,15 @@
    Réglages au localStorage, propagent (P1 → pushParam) et rafraîchissent les stats.
    Dépend de stats.js (renderStats/renderRapportMensuel) + statsParams/statsCharts +
    config/historique/vehicules — pas de cycle (stats.js n'importe pas ce module). */
-import { KIT_PRIX_KEY, COUT_POSE_KEY, COUT_CARTEGRISE_KEY, COUT_ENTRETIEN_KEY,
-         SURCOUT_ASSURANCE_KEY, AIDE_DEDUITE_KEY, ECART_REF_KEY, PROJ_NB_RECENTS_KEY,
+import { ECART_REF_KEY, PROJ_NB_RECENTS_KEY,
          CARBURANT_REF_KEY, DEFAULT_CARBURANT_REF, BUDGET_KEY, CO2_OBJECTIF_KEY,
          CONSO_DIESEL_REF_KEY, VEHICULE_DIESEL_REF_KEY } from './config.js';
 import { state } from './state.js';
 import { getVehicules } from './vehicules.js';
 import { pushParam } from './parametres.js';
 import { getAllRecords, forceRefreshHistorique } from './historique.js';
-import { SPARK_COLORS, getKitPrix, getBudgetMensuel, getObjectifCo2 } from './statsParams.js';
+import { SPARK_COLORS, getBudgetMensuel, getObjectifCo2 } from './statsParams.js';
+import { convInputValue, setConvField } from './depenses.js';
 import { buildFuelSeries, loadSparkFuels, saveSparkFuels } from './statsSparkline.js';
 import { renderStats, renderRapportMensuel } from './stats.js';
 
@@ -61,17 +61,26 @@ export function initSparkToggles() {
 export function initKitSetting() {
   const el = document.getElementById('kitPrix');
   if (!el) return;
-  el.value = getKitPrix();
+  // W91 — prix du boîtier par véhicule (repli sur la valeur globale existante).
+  el.value = convInputValue('kit_prix');
   el.addEventListener('change', () => {
-    const v = Number(el.value);
-    if (el.value === '' || !isFinite(v) || v < 0) {
-      localStorage.removeItem(KIT_PRIX_KEY);
-      el.value = getKitPrix();
-    } else {
-      localStorage.setItem(KIT_PRIX_KEY, String(v));
-    }
-    pushParam('kit_prix');   // P1 — propage vers le Sheet (et Excel)
+    setConvField('kit_prix', state.currentVehiculeNom, el.value);
+    el.value = convInputValue('kit_prix');
+    pushParam('conversion_veh');   // W91d — propage la map par véhicule (cross-appareils)
     renderStats();
+  });
+}
+
+/**
+ * W91 — Repeuple les champs de coût de conversion (boîtier + postes fixes)
+ * selon le véhicule courant. À appeler sur 'vehicule-changed' / 'parametres-synced'.
+ */
+export function refreshConversionInputs(veh = state.currentVehiculeNom) {
+  [['kitPrix', 'kit_prix'], ['coutPose', 'cout_pose'],
+   ['coutCarteGrise', 'cout_carte_grise'], ['surcoutAssurance', 'surcout_assurance'],
+   ['aideDeduite', 'aide_deduite']].forEach(([id, field]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = convInputValue(field, veh);
   });
 }
 
@@ -80,16 +89,32 @@ export function initKitSetting() {
  * référence, écart, N pleins récents). Persiste + propage (P1) + rafraîchit.
  */
 export function initRentabiliteSettings() {
-  const numFields = [
-    ['coutPose',         COUT_POSE_KEY,         'cout_pose'],
-    ['coutCarteGrise',   COUT_CARTEGRISE_KEY,   'cout_carte_grise'],
-    ['coutEntretien',    COUT_ENTRETIEN_KEY,    'cout_entretien'],
-    ['surcoutAssurance', SURCOUT_ASSURANCE_KEY, 'surcout_assurance'],
-    ['aideDeduite',      AIDE_DEDUITE_KEY,      'aide_deduite'],
-    ['ecartRef',         ECART_REF_KEY,         'ecart_ref'],
-    ['projNbRecents',    PROJ_NB_RECENTS_KEY,   'proj_nb_recents'],
+  // W91 — postes fixes de conversion : PAR VÉHICULE (repli global), sans pushParam
+  // (la synchro Sheet/Excel par véhicule est prévue en Phase B/C).
+  const convFields = [
+    ['coutPose',         'cout_pose'],
+    ['coutCarteGrise',   'cout_carte_grise'],
+    ['surcoutAssurance', 'surcout_assurance'],
+    ['aideDeduite',      'aide_deduite'],
   ];
-  numFields.forEach(([id, key, cle]) => {
+  convFields.forEach(([id, field]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = convInputValue(field);
+    el.addEventListener('change', () => {
+      setConvField(field, state.currentVehiculeNom, el.value);
+      el.value = convInputValue(field);
+      pushParam('conversion_veh');   // W91d — propage la map par véhicule (cross-appareils)
+      renderStats();
+    });
+  });
+
+  // Paramètres GLOBAUX (synchro P1) : écart réf. + N pleins récents pour la projection.
+  const globalNum = [
+    ['ecartRef',      ECART_REF_KEY,       'ecart_ref'],
+    ['projNbRecents', PROJ_NB_RECENTS_KEY, 'proj_nb_recents'],
+  ];
+  globalNum.forEach(([id, key, cle]) => {
     const el = document.getElementById(id);
     if (!el) return;
     const raw = localStorage.getItem(key);

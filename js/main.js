@@ -21,7 +21,8 @@ import { chargerStations, mergeHistoryStations } from './stations.js';
 import { initTheme, toggleTheme } from './theme.js';
 import { chargerHistorique, dupliquerDernier, voirTout, exportHistoriqueCSV, exportHistoriqueAllCSV, initCsvSepSetting, initHistoireFilters, initHistoireShare, initHistoireDelete, getMaxKmForVehicule, getAllRecords, rerenderHistorique, renderFullHistory } from './historique.js';
 import { renderStats, getNextKmPrediction, initBilanSheet } from './stats.js';
-import { initSparkToggles, initKitSetting, initRentabiliteSettings, initBudgetSetting, initCo2ObjectifSetting, initRapport } from './statsSettings.js';
+import { initSparkToggles, initKitSetting, initRentabiliteSettings, initBudgetSetting, initCo2ObjectifSetting, initRapport, refreshConversionInputs } from './statsSettings.js';
+import { initDepensesUI, renderDepenses, syncDepenses } from './depenses.js';
 import { initComparatifExport } from './comparatif.js';
 import { prewarmServerStats, getServerStats } from './statsApi.js';
 import { loadSectorPrices, renderSectorBestCard, applyHistPriceToForm } from './secteur.js';
@@ -129,9 +130,18 @@ window.addEventListener('parametres-synced', e => {
     refreshBadges();
     registerPushSubscription();   // re-propage les seuils au cache / serveur push
   }
+  refreshConversionInputs();      // W91 — les valeurs globales legacy servent de repli
   renderStats();                  // kit / budget / objectif CO₂ / surconso
 });
-if (navigator.onLine && persoAllowed()) syncParametres();
+
+/* W91b — Synchro des dépenses d'entretien (LWW par id). Re-rendu à l'application. */
+window.addEventListener('depenses-synced', e => {
+  if (!e.detail?.changed) return;
+  renderDepenses();
+  renderStats();
+});
+
+if (navigator.onLine && persoAllowed()) { syncParametres(); syncDepenses(); }
 
 /* Sync au démarrage si des pleins sont en attente et qu'on est en ligne */
 if (navigator.onLine && persoAllowed()) syncQueue();
@@ -155,6 +165,7 @@ window.addEventListener('auth-changed', () => {
   });
   prewarmServerStats(state.currentVehiculeNom || '');
   syncParametres();
+  syncDepenses();   // W91b — récupère/pousse les dépenses du compte connecté
   syncQueue();
 });
 
@@ -272,6 +283,7 @@ initComparatifExport(); // comparatif.js — W52 export CSV du comparatif véhic
 initSparkToggles();    // stats.js — W34 filtres sparkline multi-carburant
 initKitSetting();      // stats.js — prix du boitier (kit) pour l'economie nette
 initRentabiliteSettings(); // stats.js — X67/X68/X69 postes de cout + reference + projection
+initDepensesUI();      // depenses.js — W91 dépenses d'entretien par véhicule (liste + total)
 initBudgetSetting();   // stats.js — W39 objectif budget carburant mensuel
 initCo2ObjectifSetting(); // stats.js — W51 objectif CO₂ annuel évité
 initRapport();         // stats.js — rapport mensuel consultable (sélecteur de mois)
@@ -309,6 +321,8 @@ initCompteUI();        // parametres.js — U7 « Mon compte » + suppression RG
    → re-render de toutes les vues filtrées par véhicule (source : 'vehicule-changed'). */
 window.addEventListener('vehicule-changed', () => {
   onKmInput();            // km de référence dépend du véhicule
+  refreshConversionInputs(); // W91 — coûts de conversion du nouveau véhicule
+  renderDepenses();       // W91 — dépenses d'entretien du nouveau véhicule
   renderStats();          // KPIs / prédiction / CO₂ / bilan
   renderWrapped();        // bilan annuel (périmètre véhicule)
   renderStationsCard();   // carte stations (carburant par défaut du véhicule)

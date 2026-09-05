@@ -3,15 +3,16 @@
    modèle de comparaison (essence/diesel) et petits utilitaires. Ce module ne dépend
    que de config/refmodel/historique : il est importé aussi bien par le cœur (stats.js,
    computeStats) que par les rendus (statsCharts.js), sans créer de cycle. */
-import { FUEL_CONFIG, DEFAULT_SURCONSO, KIT_PRIX_KEY, DEFAULT_KIT_PRIX,
+import { FUEL_CONFIG, DEFAULT_SURCONSO,
          BUDGET_KEY, CO2_OBJECTIF_KEY, DEFAULT_CO2_OBJECTIF,
          SURCONSO_KEY, SURCONSO_MIN, SURCONSO_MAX,
-         COUT_POSE_KEY, COUT_CARTEGRISE_KEY, COUT_ENTRETIEN_KEY,
-         SURCOUT_ASSURANCE_KEY, AIDE_DEDUITE_KEY, ECART_REF_KEY, DEFAULT_ECART_REF,
+         ECART_REF_KEY, DEFAULT_ECART_REF,
          CARBURANT_REF_KEY, DEFAULT_CARBURANT_REF,
          CONSO_DIESEL_REF_KEY, VEHICULE_DIESEL_REF_KEY } from './config.js';
 import { computeConsoMoy, buildRefModel } from './refmodel.js';
 import { getAllRecords } from './historique.js';
+import { getConvField, getDepensesTotal } from './depenses.js';
+import { state } from './state.js';
 
 /* ─── Constantes partagées ─── */
 export const MONTHS_WINDOW = 6;
@@ -51,28 +52,21 @@ export function matchType(rType, fuelKey) {
       || (fuelKey === 'E85' && t.includes('ethanol'));
 }
 
-/* ─── Prix du boîtier (kit) de conversion (localStorage, défaut = B6 Excel) ─── */
-export function getKitPrix() {
-  const raw = localStorage.getItem(KIT_PRIX_KEY);
-  const n = Number(raw);
-  return raw != null && raw !== '' && isFinite(n) && n >= 0 ? n : DEFAULT_KIT_PRIX;
+/* ─── Prix du boîtier (kit) de conversion — par véhicule (repli global) ─── */
+export function getKitPrix(veh = state.currentVehiculeNom) {
+  return getConvField('kit_prix', veh);
 }
 
-/* ─── X68 — Poste de coût one-off (≥ 0, défaut 0) ─── */
-function getCoutPoste(key) {
-  const n = Number(localStorage.getItem(key));
-  return isFinite(n) && n > 0 ? n : 0;
-}
-
-/* ─── X68 — Coût TOTAL de conversion (= COUT_TOTAL Excel) ───
-   boîtier + pose + carte grise + entretien + assurance − aide (borné ≥ 0). */
-export function getCoutTotalConversion() {
-  const total = getKitPrix()
-    + getCoutPoste(COUT_POSE_KEY)
-    + getCoutPoste(COUT_CARTEGRISE_KEY)
-    + getCoutPoste(COUT_ENTRETIEN_KEY)
-    + getCoutPoste(SURCOUT_ASSURANCE_KEY)
-    - getCoutPoste(AIDE_DEDUITE_KEY);
+/* ─── W91 — Coût TOTAL de conversion pour un véhicule (= COUT_TOTAL Excel) ───
+   boîtier + pose + carte grise + assurance − aide + Σ dépenses d'entretien
+   du véhicule (borné ≥ 0). Postes fixes par véhicule avec repli global. */
+export function getCoutTotalConversion(veh = state.currentVehiculeNom) {
+  const total = getConvField('kit_prix', veh)
+    + getConvField('cout_pose', veh)
+    + getConvField('cout_carte_grise', veh)
+    + getConvField('surcout_assurance', veh)
+    - getConvField('aide_deduite', veh)
+    + getDepensesTotal(veh);
   return Math.max(0, total);
 }
 

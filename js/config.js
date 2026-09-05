@@ -1,5 +1,5 @@
 /* ─── Configuration globale ─── */
-export const APP_VERSION       = '5.33.4.0';
+export const APP_VERSION       = '5.33.8.0';
 export const GAS_URL           = 'https://script.google.com/macros/s/AKfycbwIyCfZVTpDOGBANtFcHECcCdbg4J4t377pKQjIJ0NJYFT9FMjZm5_6XOsyQAas8jeTyA/exec';
 
 // ─── U7 — Authentification « Se connecter avec Google » (Google Identity Services) ───
@@ -86,6 +86,13 @@ export const AIDE_DEDUITE_KEY      = 'suivi_e85_aide_deduite';
 export const CARBURANT_REF_KEY     = 'suivi_e85_carburant_ref';
 export const ECART_REF_KEY         = 'suivi_e85_ecart_ref';
 export const PROJ_NB_RECENTS_KEY   = 'suivi_e85_proj_nb_recents';
+// W91 — Dépenses d'entretien + coûts de conversion PAR VÉHICULE.
+//   • DEPENSES_KEY    : liste JSON [{id,vehicule,date,categorie,intitule,montant,modifie_le,supprime}]
+//   • CONV_BY_VEH_KEY : map JSON { vehicule|'__global__' : { kit_prix, cout_pose, … } }
+//     (override par véhicule ; repli sur les clés globales legacy COUT_*_KEY ci-dessus).
+export const DEPENSES_KEY          = 'suivi_e85_depenses';
+export const CONV_BY_VEH_KEY       = 'suivi_e85_conversion_veh';
+export const DEPENSE_CATEGORIES    = ['Entretien', 'Réparation', 'Kit', 'Autre'];
 export const DEFAULT_ECART_REF        = 0;      // €/L retranché au prix SP98 (0 = comparer au SP98)
 export const DEFAULT_CARBURANT_REF    = 'SP98'; // libellé informatif de la référence
 export const DEFAULT_PROJ_NB_RECENTS  = 6;      // N derniers pleins E85 pour le taux récent

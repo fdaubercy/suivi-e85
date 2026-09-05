@@ -11,6 +11,8 @@
 
 > ⚠️ **P1 (app v4.10.0.0)** : nouveaux endpoints `?action=getParametres` (GET) et `action=setParametres` (POST) pour les **paramètres métier partagés** (onglet `Parametres`, créé automatiquement au 1ᵉ appel). Actifs **qu'après un redéploiement** (*Nouvelle version*). Tant que ce n'est pas fait, l'app et Excel continuent d'utiliser leurs valeurs locales (aucune erreur visible, simplement pas de synchro des réglages).
 
+> ⚠️ **W91b (app v5.33.6.0)** : nouveaux endpoints `?action=getDepenses` (GET) et `action=setDepenses` (POST) pour les **dépenses d'entretien par véhicule** (onglet `Depenses`, créé automatiquement au 1ᵉ appel). Synchro **par ligne**, last-write-wins sur `id` (tombstone `supprime`). Actifs **qu'après un redéploiement** (*Nouvelle version*). Tant que ce n'est pas fait, l'app stocke les dépenses en local uniquement (aucune erreur visible, pas de synchro). `handleDeleteAccount` (RGPD) purge aussi les dépenses du compte.
+
 ---
 
 ## Configuration requise
@@ -22,9 +24,13 @@
 | `STATIONS_SHEET`| `Stations`                                    |
 | `VEHICULES_SHEET`| `Vehicules`                                  |
 | `PARAMS_SHEET`  | `Parametres` (créé automatiquement — P1)       |
+| `DEPENSES_SHEET`| `Depenses` (créé automatiquement — W91b)       |
 
 ### Onglet `Parametres` (P1 — paramètres métier partagés app ⇆ Excel)
-Table `cle | valeur | modifie_le` (horodatage epoch ms UTC). Source de vérité unique, synchronisée par **last-write-wins par clé**. Clés autorisées (constante `PARAM_KEYS`) : `kit_prix`, `budget_mensuel`, `objectif_co2`, `surconso`, `seuil_E85/GAZOLE/SP98` (+ `_enabled`). Endpoints : `getParametres` (lecture) / `setParametres` (upsert, n'écrase que si `modifie_le` entrant ≥ stocké).
+Table `cle | valeur | modifie_le` (horodatage epoch ms UTC). Source de vérité unique, synchronisée par **last-write-wins par clé**. Clés autorisées (constante `PARAM_KEYS`) : `kit_prix`, `budget_mensuel`, `objectif_co2`, `surconso`, `seuil_E85/GAZOLE/SP98` (+ `_enabled`), postes rentabilité (`cout_pose`, `cout_carte_grise`, `cout_entretien`, `surcout_assurance`, `aide_deduite`, `carburant_ref`, `ecart_ref`, `proj_nb_recents`, `conso_diesel_ref`, `vehicule_diesel_ref`), et **`conversion_veh`** (W91d — blob JSON des coûts de conversion par véhicule, LWW sur l'ensemble). Endpoints : `getParametres` (lecture) / `setParametres` (upsert, n'écrase que si `modifie_le` entrant ≥ stocké).
+
+### Onglet `Depenses` (W91b — dépenses d'entretien par véhicule)
+Table par ligne `id | vehicule | date | categorie | intitule | montant | modifie_le | supprime | email` (email en col I, préserve la lecture A:H pour Excel/PowerQuery). Synchro **last-write-wins par `id`** sur `modifie_le` (epoch ms) ; `supprime = 1` = tombstone propagé. Endpoints : `getDepenses` (lecture, renvoie tombstones inclus) / `setDepenses` (upsert LWW). Rattaché au compte via `email` (multi-utilisateur, comme `Parametres`).
 
 ### Clé Gemini (optionnel — scan ticket)
 Extensions → Apps Script → Paramètres du projet → Propriétés de script  

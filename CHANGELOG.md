@@ -4,6 +4,38 @@ Toutes les modifications notables de ce projet sont documentées ici.
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
+## [5.33.8.0] — 2026-09-05
+
+### Added
+- **Synchro cross-appareils des coûts de conversion par véhicule (W91d)** — la map `suivi_e85_conversion_veh` (boîtier/pose/carte grise/assurance/aide **par véhicule**) est désormais synchronisée entre appareils via l'onglet `Parametres` du Google Sheet, sous la clé métier **`conversion_veh`** (blob JSON, last-write-wins sur l'ensemble — petite map éditée rarement). Chaque édition d'un poste fixe pousse `conversion_veh` (`pushParam`) ; à la réception, `refreshConversionInputs` repeuple les champs. Comble le trou de la Phase A (un changement de boîtier saisi sur un appareil ne suivait pas sur les autres). `js/parametres.js` (DEF `conversion_veh`), `js/statsSettings.js` (push à l'édition), `Code.gs` (`PARAM_KEYS`), `tests/parametres.test.js` + `tests/depenses.test.js`. **GAS redéployé (v64).**
+
+> ℹ️ Périmètre : synchro **web ⇆ Sheet ⇆ web** (téléphone/desktop). Excel continue d'utiliser ses postes globaux (B6/N6…) ; une bascule d'Excel vers un modèle par véhicule reste un chantier ultérieur.
+
+## [5.33.7.0] — 2026-09-05
+
+### Added
+- **Dépenses d'entretien dans Excel + synchro classeur ⇆ Sheet (W91c, Phase C)** — nouveau module VBA `modSyncDepenses` : feuille technique masquée `_Depenses` + table `tblDepenses` (`id · vehicule · date · categorie · intitule · montant · modifie_le · supprime`), synchro **par ligne, last-write-wins sur `id`** (tombstone `supprime`) avec l'onglet `Depenses` du Google Sheet. Points d'entrée `SyncDepenses` / `SyncDepensesManuel` / `AjouterDepenseExcel` (saisie manuelle depuis Excel + push). `SyncDepenses` est appelée par le moteur de synchro global (`modSyncEngine`, tolérant, après les paramètres).
+
+### Changed
+- **Excel — `COÛT TOTAL` de conversion intègre les dépenses par véhicule (W91c)** — la formule `N11` (`modRentabilite`) remplace le poste scalaire `COUT_ENTRETIEN` par `SUMIFS(tblDepenses[montant]…)` filtré sur le véhicule sélectionné (`B3`, `"(tous)"` → toutes), protégé par `IFERROR`. Aligne le calcul de rentabilité Excel sur le web. L'ancienne cellule entretien (N8) est conservée mais **exclue du total** (label « Entretiens (ancien — voir onglet Dépenses) »). Vérifié en live : dépense 100 € → N11 +100 ; tombstone → exclu ; nettoyage → total restauré.
+
+> ⚠️ **Nécessite le redéploiement Apps Script (W91b)** pour que la synchro Excel ⇆ Sheet des dépenses fonctionne. Tant qu'il n'est pas fait, `SyncDepenses` échoue proprement (aucune donnée écrite) ; la table locale et le calcul de rentabilité fonctionnent déjà. Le classeur `.xlsm` (flag git `assume-unchanged`) n'est pas commité — la source VBA versionnée reste `vba/*.bas`.
+
+## [5.33.6.0] — 2026-09-05
+
+### Added
+- **Synchro des dépenses d'entretien app ⇆ Google Sheet (W91b, Phase B)** — les dépenses W91 sont maintenant **synchronisées** entre appareils/comptes via un nouvel onglet `Depenses` (colonnes `id · vehicule · date · categorie · intitule · montant · modifie_le · supprime · email`) et deux endpoints Apps Script : `getDepenses` (GET) et `setDepenses` (POST). Synchro **par ligne, last-write-wins sur `id`** (horodatage epoch ms), suppressions propagées par **tombstone** `supprime`. Côté client : `syncDepenses()` (réconciliation pull + push au démarrage et à la connexion) et `pushDepenses()` (à chaque ajout/suppression) ; événement `depenses-synced` → re-rendu liste + stats. `handleDeleteAccount` (RGPD) purge aussi les dépenses du compte. `js/depenses.js` (sync client), `js/main.js` (câblage démarrage/auth + listener), `Code.gs` (onglet + endpoints + purge RGPD), `GAS_UPDATE.md`, `tests/depensesSync.test.js` (5 tests LWW/push/tombstone).
+
+> ⚠️ **Nécessite un redéploiement du script Apps Script** (Déployer → Gérer les déploiements → Nouvelle version). Tant qu'il n'est pas fait, l'app reste en stockage **local** (Phase A) sans erreur visible.
+
+## [5.33.5.0] — 2026-09-05
+
+### Added
+- **Dépenses d'entretien par véhicule + coûts de conversion par véhicule (W91, Phase A web)** — nouveau bloc « 🧾 Dépenses d'entretien » dans Réglages ▸ Conversion E85 : liste éditable de dépenses (**intitulé + montant + date + catégorie** Entretien/Réparation/Kit/Autre), ajoutables au fil de l'eau, avec **total automatique**. Le total s'intègre au **coût total de conversion** utilisé par le calcul de rentabilité (économie nette + date de rentabilité). Les dépenses et **tous les postes de conversion fixes** (boîtier, pose, carte grise, assurance, aide) sont désormais **rattachés au véhicule courant**, avec repli non destructif sur la dernière valeur globale saisie tant qu'un véhicule n'a pas la sienne. Nouveau module `js/depenses.js` (stockage local `suivi_e85_depenses` + `suivi_e85_conversion_veh`, `id` + tombstone `supprime` prévus pour la synchro Phase B/C). `js/config.js`, `js/statsParams.js` (`getKitPrix(veh)`, `getCoutTotalConversion(veh)`), `js/statsSettings.js` (`refreshConversionInputs`), `js/stats.js`, `js/main.js`, `index.html`, `css/style.css`, `tests/depenses.test.js` (14 tests).
+
+### Changed
+- **Champ « Entretiens supplémentaires » (scalaire unique) remplacé** par la liste détaillée de dépenses ci-dessus. La clé globale `cout_entretien` n'entre plus dans le coût total (remplacée par la somme des dépenses du véhicule). Les postes fixes ne sont plus poussés en synchro scalaire P1 en Phase A (synchro par véhicule prévue en Phase B/C) ; leur valeur globale précédemment synchronisée reste le repli par défaut.
+
 ## [5.33.4.0] — 2026-08-30
 
 ### Fixed

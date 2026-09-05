@@ -22,7 +22,7 @@ import { GAS_URL, APP_TOKEN, KIT_PRIX_KEY, BUDGET_KEY, CO2_OBJECTIF_KEY,
          COUT_POSE_KEY, COUT_CARTEGRISE_KEY, COUT_ENTRETIEN_KEY,
          SURCOUT_ASSURANCE_KEY, AIDE_DEDUITE_KEY,
          CARBURANT_REF_KEY, ECART_REF_KEY, PROJ_NB_RECENTS_KEY,
-         CONSO_DIESEL_REF_KEY, VEHICULE_DIESEL_REF_KEY } from './config.js';
+         CONSO_DIESEL_REF_KEY, VEHICULE_DIESEL_REF_KEY, CONV_BY_VEH_KEY } from './config.js';
 import { getIdToken, isAuthed, authEnabled, getUser, signOut } from './auth.js';
 
 /* Mapping clé Sheet ↔ clé localStorage.
@@ -52,6 +52,9 @@ const DEFS = [
   // Comparaison E85 vs diesel — véhicule diesel de référence + conso de repli.
   { cle: 'conso_diesel_ref',    local: CONSO_DIESEL_REF_KEY,   kind: 'num'  },
   { cle: 'vehicule_diesel_ref', local: VEHICULE_DIESEL_REF_KEY, kind: 'str' },
+  // W91d — coûts de conversion PAR VÉHICULE (map JSON) synchronisés cross-appareils.
+  // Blob opaque (LWW sur l'ensemble) : petite map éditée rarement.
+  { cle: 'conversion_veh',      local: CONV_BY_VEH_KEY,        kind: 'str' },
 ];
 const DEF_BY_CLE  = Object.fromEntries(DEFS.map(d => [d.cle, d]));
 /** Clés métier exposées (utilisé par les modules appelants). */

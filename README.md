@@ -62,7 +62,7 @@ L'application est organisée en **5 vues** (pages) accessibles via une **barre d
 | 📊 **Stats** | Statistiques live, **budget mensuel** (W39) + **tendance 6 mois** (W50) + **alerte de dépassement anticipée** (W56), **CO₂ évité** (W40) + **objectif CO₂ annuel** (W51) + **cumul mensuel** (W55), **comparatif véhicules** (W41) + **export CSV** (W52), rapport mensuel, bilan annuel « Wrapped » |
 | 🗺️ **Carte** | **Stations les moins chères autour de moi** (W64/D3 — **sélecteur E85/Gazole/SP98**, rayon réglable **5/10/15/20 km**, top‑3 au-dessus de la carte + reste en liste défilante, marqueurs enseigne + prix, zoom/plein écran), puis carte des stations habituelles + prix moyens, **sélecteur E85/Gazole/SP98** (W47), **épinglage manuel 📌** (W53) |
 | 📜 **Historique** | 5 derniers pleins + historique complet filtrable + **export CSV filtré / global, séparateur `;` ou `,`** (W25 + W54) |
-| ⚙️ **Réglages** | Réglages **regroupés par bloc repliable** (v4.1/v4.2) : **🚀 démarrage** (vue d'ouverture), alertes prix par carburant (alerte + seuil groupés), **conversion E85** (coût total paramétrable : boîtier + pose + carte grise + entretien + surcoût assurance − aide, **carburant de référence** SP98/SP95/E10 **ou Gazole/diesel** + écart €/L, nb pleins récents pour la projection — X67/X68/X69/X70, W89 ; en mode diesel : véhicule diesel de référence + conso L/100 de repli), **budget mensuel**, **objectif CO₂ annuel** |
+| ⚙️ **Réglages** | Réglages **regroupés par bloc repliable** (v4.1/v4.2) : **🚀 démarrage** (vue d'ouverture), alertes prix par carburant (alerte + seuil groupés), **conversion E85** (coût total **par véhicule** : boîtier + pose + carte grise + surcoût assurance − aide **+ dépenses d'entretien**, **carburant de référence** SP98/SP95/E10 **ou Gazole/diesel** + écart €/L, nb pleins récents pour la projection — X67/X68/X69/X70, W89, W91 ; en mode diesel : véhicule diesel de référence + conso L/100 de repli), **budget mensuel**, **objectif CO₂ annuel** |
 
 - **Routeur par hash** (`js/router.js`) : chaque vue a son URL (`#/saisie`, `#/stats`, `#/carte`, `#/historique`, `#/params`) → le **bouton retour** du navigateur et de l'OS fonctionne nativement, et l'URL est partageable. Aucun fallback serveur nécessaire (compatible GitHub Pages).
 - **Vue de départ configurable** (v4.2.0.0) — dans ⚙️ Réglages → « 🚀 Démarrage », choisir l'ouverture sur **Accueil**, **Saisie** ou **dernière vue consultée**. Par défaut Accueil ; un deep-link `#/<vue>` reste prioritaire.
@@ -400,6 +400,7 @@ suivi-conso-carburant/
 │   ├── statsCharts.js               # W87 jauges/tuiles/graphes CO₂/budget/rentabilité (W40/W51/W55/W89) + calcul rapport mensuel
 │   ├── statsSparkline.js            # W87 sparkline prix multi-carburant W28+W34 (W64/D2) + prédiction W33 + getNextKmPrediction W35
 │   ├── statsSettings.js             # W87 câblage des champs de réglages (init* : kit, rentabilité, budget, objectif CO₂)
+│   ├── depenses.js                  # W91 dépenses d'entretien + coûts de conversion PAR VÉHICULE (liste + total + repli global)
 │   ├── dashboardApi.js              # W83/W84 client GAS buildDashboard (rafraîchir le bilan) + URL du Google Sheet
 │   ├── statsApi.js                  # W59/S12 client agrégats serveur (cache 1 h) + résumé annuel ⚡
 │   ├── theme.js                     # U8 thème clair/sombre (prefers-color-scheme + persistance)
@@ -583,6 +584,11 @@ Depuis **v4.10.0.0**, les paramètres **métier** modifiables par l'utilisateur 
 - **Excel** : `modSyncParametres.SyncParametres()`, appelé en fin de `SyncCore` (`modSyncGS`). Le **miroir local** (cle/valeur/modifie_le) est stocké dans le bloc **F/G/H de l'onglet technique `Notes`** (déjà masqué, qui contient déjà `tbl_carburant` et `tbl_stationEssence`) — **aucun nouvel onglet créé**. Écriture traversante vers les cellules du dashboard (garde-fou : une cellule contenant une **formule** n'est jamais écrasée). Horodatage UTC via `SWbemDateTime`.
 - **Endpoints GAS** : `?action=getParametres` (lecture) et `action=setParametres` (upsert LWW, clés métier filtrées). ⚠️ Nécessite un **redéploiement** du Web App.
 - **Hors périmètre** (volontairement local à l'appareil) : thème, vue de départ, blocs repliés, tri carte, séparateur CSV. Les **véhicules** gardent leur propre onglet `Vehicules`.
+
+**Dépenses d'entretien par véhicule (W91)** — liste éditable (intitulé + montant + date + catégorie) rattachée au véhicule, dont le **total alimente le coût total de conversion** (rentabilité). Synchro **par ligne, last-write-wins sur `id`** (tombstone `supprime`) :
+- **App** : `js/depenses.js` (`syncDepenses()`/`pushDepenses()`, événement `depenses-synced`) ; stockage `suivi_e85_depenses`. Les postes de conversion fixes (boîtier/pose/…) sont aussi par véhicule (`suivi_e85_conversion_veh`, repli global).
+- **Excel** : `modSyncDepenses` (feuille masquée `_Depenses` + table `tblDepenses`), appelé en fin de `SyncCore`. `modRentabilite` intègre `SUMIFS(tblDepenses[montant]…)` du véhicule (B3) dans `COÛT TOTAL` (N11).
+- **Endpoints GAS** : `?action=getDepenses` / `action=setDepenses` (onglet `Depenses`). ⚠️ Nécessite un **redéploiement** du Web App.
 
 > Note de migration : les réglages saisis dans l'app **avant** la v4.10.0.0 n'ont pas d'horodatage ; ils ne sont pas écrasés mais ne remontent au Sheet qu'à leur **prochaine modification**. Idem pour les valeurs par défaut des cellules Excel (seedées avec un horodatage `0`, donc l'app/le Sheet font foi).
 

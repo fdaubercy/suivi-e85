@@ -92,6 +92,13 @@ Public Sub SyncCore(ByRef addedFromGS As Long, ByRef sentToGS As Long, _
     paramSync = modSyncParametres.SyncParametres()
     On Error GoTo ErrHandler
 
+    ' W91c : synchro des depenses d'entretien par vehicule (onglet "_Depenses"
+    ' <-> "Depenses" du Google Sheet). Tolerant ; ne bloque pas la sync des pleins.
+    SetStatus "Sync depenses d'entretien..."
+    On Error Resume Next
+    modSyncDepenses.SyncDepenses
+    On Error GoTo ErrHandler
+
     ' Prix marche : rafraichit la Power Query "PrixHistory" depuis le Google
     ' Sheet (sinon l'onglet _PrixHistory local reste fige -> dates manquantes).
     ' Synchrone (BackgroundQuery=False) -> aucune donnee loupee. Tolerant.

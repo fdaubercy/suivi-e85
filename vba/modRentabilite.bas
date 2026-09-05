@@ -32,6 +32,7 @@ Public Sub InstallerParametresRentabilite()
     Dim wasProtected As Boolean: wasProtected = ws.ProtectContents
     UnprotectSuivi ws
 
+    modSyncDepenses.EnsureDepensesReady   ' W91c : table tblDepenses avant la formule SUMIFS de N11
     EnsureCostBlock ws          ' X68 : bloc cout + Names + COUT_TOTAL
     EnsureCarburantRefDropdown ws ' W89 : liste deroulante N12 (SP98/SP95/E10/GAZOLE)
     EnsureSurconsoGuard ws      ' X70 : J8 borne + avertissement
@@ -52,7 +53,7 @@ Private Sub EnsureCostBlock(ws As Worksheet)
     SetLabel ws, 5, 13, "COUT DE CONVERSION", True
     SetLabel ws, 6, 13, "Pose / main-d'" & ChrW(339) & "uvre (" & ChrW(8364) & ")", False
     SetLabel ws, 7, 13, "Modification carte grise (" & ChrW(8364) & ")", False
-    SetLabel ws, 8, 13, "Entretiens suppl" & ChrW(233) & "mentaires (" & ChrW(8364) & ")", False
+    SetLabel ws, 8, 13, "Entretiens (ancien - voir onglet D" & ChrW(233) & "penses)", False
     SetLabel ws, 9, 13, "Surco" & ChrW(251) & "t d'assurance (" & ChrW(8364) & ")", False
     SetLabel ws, 10, 13, "Aide / subvention d" & ChrW(233) & "duite (" & ChrW(8364) & ")", False
     SetLabel ws, 11, 13, "CO" & ChrW(219) & "T TOTAL conversion (" & ChrW(8364) & ")", True
@@ -73,7 +74,7 @@ Private Sub EnsureCostBlock(ws As Worksheet)
     ' Notes (colonne O) - libelles d'aide, ecrasables
     SetLabel ws, 6, 15, ChrW(8592) & " 0 si pose DIY", False
     SetLabel ws, 10, 15, ChrW(8592) & " soustraite du total", False
-    SetLabel ws, 11, 15, ChrW(8592) & " bo" & ChrW(238) & "tier + postes " & ChrW(8722) & " aide", False
+    SetLabel ws, 11, 15, ChrW(8592) & " bo" & ChrW(238) & "tier + postes " & ChrW(8722) & " aide + d" & ChrW(233) & "penses", False
     SetLabel ws, 13, 15, ChrW(8592) & " 0 = comparer au SP98", False
 
     ' Names classeur (crees si absents)
@@ -88,9 +89,13 @@ Private Sub EnsureCostBlock(ws As Worksheet)
     EnsureName "ECART_REF", "$N$13"
     EnsureName "PROJ_NB_RECENTS", "$N$14"
 
-    ' Formule cout total (Formula2 : evite l'intersection implicite @)
+    ' Formule cout total (Formula2 : evite l'intersection implicite @).
+    ' W91c : l'entretien scalaire (COUT_ENTRETIEN) est remplace par la somme des
+    ' depenses d'entretien du vehicule selectionne (B3) via la table tblDepenses.
     ws.Range("N11").Formula2 = _
-        "=MAX(0,COUT_BOITIER+COUT_POSE+COUT_CARTEGRISE+COUT_ENTRETIEN+SURCOUT_ASSURANCE-AIDE_DEDUITE)"
+        "=MAX(0,COUT_BOITIER+COUT_POSE+COUT_CARTEGRISE+SURCOUT_ASSURANCE-AIDE_DEDUITE" & _
+        "+IFERROR(SUMIFS(tblDepenses[montant],tblDepenses[vehicule]," & _
+        "IF($B$3=""(tous)"",""*"",$B$3),tblDepenses[supprime],0),0))"
 
     ' Relabel du poste boitier dans le bloc parametres de gauche (A6)
     ws.Range("A6").value = "Co" & ChrW(251) & "t du bo" & ChrW(238) & "tier (kit) (" & ChrW(8364) & ")"

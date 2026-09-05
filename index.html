@@ -471,14 +471,6 @@
       </div>
     </div>
     <div class="seuil-row">
-      <label for="coutEntretien" class="notif-label">Entretiens supplémentaires</label>
-      <div style="display:flex;align-items:center;gap:6px">
-        <input type="number" id="coutEntretien" class="seuil-input" aria-label="Coût des entretiens supplémentaires en euros"
-               step="1" min="0" placeholder="0" inputmode="decimal">
-        <span class="seuil-unit">€</span>
-      </div>
-    </div>
-    <div class="seuil-row">
       <label for="surcoutAssurance" class="notif-label">Surcoût d'assurance</label>
       <div style="display:flex;align-items:center;gap:6px">
         <input type="number" id="surcoutAssurance" class="seuil-input" aria-label="Surcoût d'assurance en euros"
@@ -494,7 +486,25 @@
         <span class="seuil-unit">€</span>
       </div>
     </div>
-    <p class="notif-sub" style="margin-top:4px"><strong>Coût total de conversion</strong> = boîtier + pose + carte grise + entretiens + assurance − aide. Sert au calcul de l'économie nette et de la date de rentabilité. 0 € accepté.</p>
+    <p class="notif-sub" style="margin-top:4px">Coûts <strong>par véhicule</strong> (repli sur la dernière valeur globale saisie tant qu'un véhicule n'a pas la sienne). 0 € accepté.</p>
+
+    <!-- W91 — Dépenses d'entretien du véhicule (intitulé + montant + date + catégorie) -->
+    <div class="depenses-block">
+      <p class="notif-label" style="margin:10px 0 2px">🧾 Dépenses d'entretien <span id="depensesVehLabel" class="depenses-veh"></span></p>
+      <div id="depenseAdd" class="depense-add">
+        <input type="text" id="depIntitule" class="seuil-input" placeholder="Intitulé (ex. vidange)" aria-label="Intitulé de la dépense" maxlength="60">
+        <div class="depense-add-row">
+          <input type="number" id="depMontant" class="seuil-input" placeholder="0 €" aria-label="Montant en euros" step="0.01" min="0" inputmode="decimal">
+          <input type="date" id="depDate" class="seuil-input" aria-label="Date de la dépense">
+          <select id="depCategorie" class="seuil-input" aria-label="Catégorie de la dépense"></select>
+          <button type="button" id="depAddBtn" class="submit-btn depense-add-btn">Ajouter</button>
+        </div>
+      </div>
+      <ul id="depensesList" class="depenses-list"></ul>
+      <div class="depenses-total-row">Total dépenses : <strong id="depensesTotal">0 €</strong></div>
+    </div>
+
+    <p class="notif-sub" style="margin-top:6px"><strong>Coût total de conversion</strong> = boîtier + pose + carte grise + assurance − aide + dépenses d'entretien. Sert au calcul de l'économie nette et de la date de rentabilité.</p>
 
     <div class="seuil-row" style="margin-top:8px">
       <label for="carburantRef" class="notif-label">Carburant de référence</label>

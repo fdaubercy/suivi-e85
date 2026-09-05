@@ -101,9 +101,10 @@ function computeStats() {
   });
 
   const econBrute = totCoutRefEquiv - totCoutE85;    // = J30 (J29 − B35)
-  const kitPrix   = getKitPrix();                    // = B6 (boîtier seul)
-  // X68 — économie nette sur le COÛT TOTAL de conversion (pas le boîtier seul).
-  const coutTotalConversion = getCoutTotalConversion();
+  const kitPrix   = getKitPrix(veh);                 // = B6 (boîtier seul), par véhicule
+  // X68/W91 — économie nette sur le COÛT TOTAL de conversion (pas le boîtier seul),
+  // rattaché au véhicule courant (postes fixes + dépenses d'entretien).
+  const coutTotalConversion = getCoutTotalConversion(veh);
   const econNette = econBrute - coutTotalConversion; // = J31 (sur COUT_TOTAL)
 
   // W89 (A1) — durée d'usage E85 (1er → dernier plein E85), en mois, pour projeter

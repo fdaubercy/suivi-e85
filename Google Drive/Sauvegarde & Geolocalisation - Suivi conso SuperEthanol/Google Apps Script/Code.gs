@@ -76,13 +76,23 @@ const PARAM_KEYS = [
   'cout_pose', 'cout_carte_grise', 'cout_entretien', 'surcout_assurance',
   'aide_deduite', 'carburant_ref', 'ecart_ref', 'proj_nb_recents',
   // W89 — comparaison E85 vs diesel (carburant de référence Gazole)
-  'conso_diesel_ref', 'vehicule_diesel_ref'
+  'conso_diesel_ref', 'vehicule_diesel_ref',
+  // W91d — coûts de conversion par véhicule (blob JSON, LWW sur l'ensemble)
+  'conversion_veh'
 ];
 
 // U7 — colonne « email » de l'onglet Parametres (multi-utilisateur). En DERNIÈRE
 // position (D) pour préserver la lecture Excel/PowerQuery des colonnes A:C.
 //   A cle · B valeur · C modifie_le · D email
 const IDX_PARAM_EMAIL = 3;   // 0-based (colonne D)
+
+// W91 — Dépenses d'entretien PAR VÉHICULE (synchro par ligne, LWW sur `id`).
+//   A id · B vehicule · C date · D categorie · E intitule · F montant
+//   G modifie_le · H supprime · I email
+// email en DERNIÈRE colonne (I) pour préserver la lecture Excel/PowerQuery A:H.
+const DEPENSES_SHEET  = 'Depenses';
+const DEP_HEADERS     = ['id', 'vehicule', 'date', 'categorie', 'intitule', 'montant', 'modifie_le', 'supprime', 'email'];
+const IDX_DEP_EMAIL   = 8;   // 0-based (colonne I)
 
 const HEADERS = [
   'Horodatage', 'Date', 'Type', 'Km compteur',         // A B C D
@@ -224,6 +234,14 @@ function doGet(e) {
     const pEmail = resolveOwner_(e, null);
     if (!pEmail) return unauthorizedResponse_();
     return handleGetParametres(pEmail);
+  }
+
+  // W91 — dépenses d'entretien par véhicule (lues par l'app et par Excel/VBA)
+  //   ?action=getDepenses → { depenses: [{id, vehicule, date, categorie, intitule, montant, modifie_le, supprime}] }
+  if (e.parameter.action === 'getDepenses') {
+    const pEmail = resolveOwner_(e, null);
+    if (!pEmail) return unauthorizedResponse_();
+    return handleGetDepenses(pEmail);
   }
 
   // G3/G4 — (re)construction de l'onglet « Tableau de bord » natif Sheets,
@@ -375,6 +393,15 @@ function doPost(e) {
     const pEmail = resolveOwner_(e, payload);
     if (!pEmail) return unauthorizedResponse_();
     return handleSetParametres(ss, payload.params || [], pEmail);
+  }
+
+  // W91 — dépenses d'entretien : upsert last-write-wins par `id` (tombstone `supprime`).
+  //   body { action:'setDepenses', depenses:[{id, vehicule, date, categorie, intitule, montant, modifie_le, supprime}] }
+  //   → renvoie l'état autoritatif fusionné pour réconciliation côté client.
+  if (payload.action === 'setDepenses') {
+    const pEmail = resolveOwner_(e, payload);
+    if (!pEmail) return unauthorizedResponse_();
+    return handleSetDepenses(ss, payload.depenses || [], pEmail);
   }
 
   // ── Suppression d'un plein par sync_id (col O, index 14) ──
@@ -604,7 +631,7 @@ function handleDeletePlein(ss, syncId, email) {
 // ─────────────────────────────────────────────────────────────
 function handleDeleteAccount(ss, email) {
   if (!email) return unauthorizedResponse_();
-  var deleted = { pleins: 0, params: 0, push: 0 };
+  var deleted = { pleins: 0, params: 0, push: 0, depenses: 0 };
 
   // 1. Pleins — suppression physique des lignes du compte.
   var sheet = getOrCreateSheet(ss);
@@ -631,8 +658,18 @@ function handleDeleteAccount(ss, email) {
     }
   } catch (e) { Logger.log('deleteAccount push cleanup: ' + e.message); }
 
+  // 4. W91 — dépenses d'entretien du compte.
+  try {
+    var dSheet = getOrCreateDepensesSheet_(ss);
+    var dData  = dSheet.getDataRange().getValues();
+    for (var m = dData.length - 1; m >= 1; m--) {
+      if (_rowBelongsTo_(dData[m][IDX_DEP_EMAIL], email)) { dSheet.deleteRow(m + 1); deleted.depenses++; }
+    }
+  } catch (e2) { Logger.log('deleteAccount depenses cleanup: ' + e2.message); }
+
   Logger.log('🗑️ deleteAccount(' + email + ') — ' +
-    deleted.pleins + ' pleins, ' + deleted.params + ' params, ' + deleted.push + ' push.');
+    deleted.pleins + ' pleins, ' + deleted.params + ' params, ' + deleted.push + ' push, ' +
+    deleted.depenses + ' depenses.');
   return jsonResponse({ success: true, deleted: deleted });
 }
 
@@ -1097,6 +1134,98 @@ function handleSetParametres(ss, incoming, email) {
     return { cle: cle, valeur: map[cle].valeur, modifie_le: map[cle].modifie_le };
   });
   return jsonResponse({ success: true, params: params });
+}
+
+// ─────────────────────────────────────────────────────────────
+//  W91 — Dépenses d'entretien par véhicule (onglet « Depenses »)
+//  Table par ligne : id | vehicule | date | categorie | intitule |
+//                    montant | modifie_le | supprime | email
+//  Synchro = last-write-wins par `id` sur modifie_le (epoch ms).
+//  Tombstone `supprime` = 1 pour propager les suppressions.
+// ─────────────────────────────────────────────────────────────
+function getOrCreateDepensesSheet_(ss) {
+  let sheet = ss.getSheetByName(DEPENSES_SHEET);
+  if (!sheet) sheet = ss.insertSheet(DEPENSES_SHEET);
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(DEP_HEADERS);
+    sheet.getRange(1, 1, 1, DEP_HEADERS.length)
+      .setFontWeight('bold')
+      .setBackground('#1B3A5C')
+      .setFontColor('#FFFFFF');
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
+
+// Lit l'onglet Depenses → { id: { row, ... } } pour UN compte.
+function readDepensesMap_(sheet, email) {
+  const data = sheet.getDataRange().getValues();
+  const map  = {};
+  for (let i = 1; i < data.length; i++) {
+    const id = String(data[i][0] || '').trim();
+    if (!id) continue;
+    if (!_rowBelongsTo_(data[i][IDX_DEP_EMAIL], email)) continue;
+    map[id] = {
+      row:        i + 1,
+      vehicule:   data[i][1],
+      date:       data[i][2],
+      categorie:  data[i][3],
+      intitule:   data[i][4],
+      montant:    data[i][5],
+      modifie_le: Number(data[i][6]) || 0,
+      supprime:   Number(data[i][7]) || 0,
+    };
+  }
+  return map;
+}
+
+function _depenseToObj_(id, r) {
+  return {
+    id: id, vehicule: r.vehicule, date: r.date, categorie: r.categorie,
+    intitule: r.intitule, montant: r.montant, modifie_le: r.modifie_le, supprime: r.supprime,
+  };
+}
+
+function handleGetDepenses(email) {
+  const ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheet = getOrCreateDepensesSheet_(ss);
+  const map   = readDepensesMap_(sheet, email);
+  const depenses = Object.keys(map).map(id => _depenseToObj_(id, map[id]));
+  return jsonResponse({ depenses: depenses });
+}
+
+function handleSetDepenses(ss, incoming, email) {
+  const sheet = getOrCreateDepensesSheet_(ss);
+  const map   = readDepensesMap_(sheet, email);
+
+  (incoming || []).forEach(function (d) {
+    const id = String(d && d.id || '').trim();
+    if (!id) return;
+    const ts  = Number(d.modifie_le) || 0;
+    const row = [
+      id, d.vehicule || '', d.date || '', d.categorie || '',
+      d.intitule || '', Number(d.montant) || 0, ts, Number(d.supprime) ? 1 : 0, email,
+    ];
+    const cur = map[id];
+    if (cur) {
+      // Last-write-wins : on n'écrase que si l'entrant est au moins aussi récent.
+      if (ts >= cur.modifie_le) {
+        sheet.getRange(cur.row, 1, 1, DEP_HEADERS.length).setValues([row]);
+        cur.vehicule = row[1]; cur.date = row[2]; cur.categorie = row[3];
+        cur.intitule = row[4]; cur.montant = row[5]; cur.modifie_le = ts;
+        cur.supprime = row[7];
+      }
+    } else {
+      sheet.appendRow(row);
+      map[id] = {
+        row: sheet.getLastRow(), vehicule: row[1], date: row[2], categorie: row[3],
+        intitule: row[4], montant: row[5], modifie_le: ts, supprime: row[7],
+      };
+    }
+  });
+
+  const depenses = Object.keys(map).map(id => _depenseToObj_(id, map[id]));
+  return jsonResponse({ success: true, depenses: depenses });
 }
 
 function getOrCreateSheet(ss) {
